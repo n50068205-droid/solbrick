@@ -33,7 +33,7 @@ function App() {
   const [usdBalance, setUsdBalance] = useState<number>(10000);
   const [message, setMessage] = useState('');
   const [activePage, setActivePage] = useState<'home' | 'portfolio' | 'detail' | 'calculator' | 'transactions'>('home');
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  
   const [portfolio, setPortfolio] = useState<{[key: number]: number}>({});
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -128,8 +128,8 @@ function App() {
   const calcResult = calcAmount * Math.pow(1 + calcRoi/100, calcYears);
   const calcProfit = calcResult - calcAmount;
   const chartData = [40, 45, 42, 48, 52, 49, 55, 58, 54, 62, 67, 71];
-  const months = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
-  const maxVal = Math.max(...chartData);
+  
+  
 
   const onboardingSteps = [
     { icon: '🏗️', title: 'Добро пожаловать в SolBrick', desc: 'Первая платформа фракционного владения недвижимостью Казахстана на Solana' },
