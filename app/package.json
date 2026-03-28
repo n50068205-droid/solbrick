@@ -45,5 +45,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "ts-mocha": "^11.1.0"
   }
 }
