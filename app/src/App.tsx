@@ -352,7 +352,7 @@ function App() {
         </div>
       )}
 
-      <main style={{ maxWidth:1280, margin:'0 auto', padding:'24px 32px' }}>
+      <main style={{ maxWidth:1280, margin:'0 auto', padding:'24px 16px' }}>
         {message && (
           <div style={{ marginBottom:16, padding:'10px 20px', background: message.includes('✅') ? '#0d2d1e' : '#2d1515', border:`1px solid ${message.includes('✅') ? '#00C89640' : '#ff475740'}`, borderRadius:8, fontSize:13, color: message.includes('✅') ? '#00C896' : '#FF4757', animation:'fadeInDown 0.3s ease' }}>
             {message}
@@ -469,7 +469,7 @@ function App() {
               </div>
             ) : (
               <>
-                <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginBottom:20 }}>
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(140px, 1fr))', gap:12, marginBottom:20 }}>
                   {[
                     {label:'Портфель',value:`$${totalPortfolioValue}`,sub:'инвестировано',color:'#00C896'},
                     {label:'Свободно',value:`$${usdBalance.toLocaleString()}`,sub:'доступно',color:'#4A9EFF'},
@@ -566,7 +566,7 @@ function App() {
               </div>
             </div>
 
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:16 }}>
               {filteredAssets.map((asset, idx) => {
                 const pct = Math.round((asset.soldShares/asset.totalShares)*100);
                 const isHot = pct > 70;
