@@ -49,6 +49,13 @@ function App() {
   const [calcYears, setCalcYears] = useState(3);
   const [calcRoi, setCalcRoi] = useState(12);
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [photoModal, setPhotoModal] = useState<{project: any, photoIndex: number} | null>(null);
 
@@ -212,7 +219,7 @@ function App() {
       </div>
 
       {/* Header */}
-      <header style={{ background:'#1a1f2e', borderBottom:'1px solid #2a2f3e', padding:'0 32px', display:'flex', alignItems:'center', justifyContent:'space-between', height:56, position:'sticky', top:0, zIndex:100 }}>
+      <header style={{ background:'#1a1f2e', borderBottom:'1px solid #2a2f3e', padding: isMobile ? '0 12px' : '0 32px', display:'flex', alignItems:'center', justifyContent:'space-between', height:56, position:'sticky', top:0, zIndex:100 }}>
         <div style={{ display:'flex', alignItems:'center', gap:32 }}>
           <div onClick={() => setActivePage('home')} style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }}>
             <div style={{ width:32, height:32, background:'#00C896', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16 }}>🏗</div>
