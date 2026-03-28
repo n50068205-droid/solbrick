@@ -219,8 +219,8 @@ function App() {
       </div>
 
       {/* Header */}
-      <header style={{ background:'#1a1f2e', borderBottom:'1px solid #2a2f3e', padding: isMobile ? '0 12px' : '0 32px', display:'flex', alignItems:'center', justifyContent:'space-between', height:56, position:'sticky', top:0, zIndex:100 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:32 }}>
+      <header style={{ background:'#1a1f2e', borderBottom:'1px solid #2a2f3e', padding: isMobile ? '0 12px' : '0 32px', display:'flex', alignItems:'center', justifyContent:'space-between', height: isMobile ? 48 : 56, position:'sticky', top:0, zIndex:100 }}>
+        <div style={{ display:'flex', alignItems:'center', gap: isMobile ? 8 : 32 }}>
           <div onClick={() => setActivePage('home')} style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }}>
             <div style={{ width:32, height:32, background:'#00C896', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16 }}>🏗</div>
             <span style={{ fontSize:16, fontWeight:700, color:'#e8eaed', letterSpacing:0.5 }}>SolBrick</span>
@@ -669,6 +669,18 @@ function App() {
               })}
             </div>
           </>
+        )}
+
+        {isMobile && (
+          <div style={{ position:'fixed', bottom:0, left:0, right:0, zIndex:200, background:'#1a1f2e', borderTop:'1px solid #2a2f3e', display:'flex', justifyContent:'space-around', padding:'8px 0 20px', backdropFilter:'blur(20px)' }}>
+            {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Калькулятор'],['transactions','📋','История']].map(([page, icon, label]) => (
+              <button key={page} onClick={() => setActivePage(page as any)}
+                style={{ background:'transparent', border:'none', cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:3, padding:'4px 12px', borderRadius:8, color: activePage===page ? '#00C896' : '#9aa0a6' }}>
+                <span style={{ fontSize:22 }}>{icon}</span>
+                <span style={{ fontSize:10, fontWeight: activePage===page ? 600 : 400 }}>{label}</span>
+              </button>
+            ))}
+          </div>
         )}
 
         <div style={{ marginTop:48, paddingTop:20, borderTop:'1px solid #1e2330', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
