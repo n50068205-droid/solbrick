@@ -127,7 +127,6 @@ function App() {
 
   const calcResult = calcAmount * Math.pow(1 + calcRoi/100, calcYears);
   const calcProfit = calcResult - calcAmount;
-  const chartData = [40, 45, 42, 48, 52, 49, 55, 58, 54, 62, 67, 71];
   
   
 
