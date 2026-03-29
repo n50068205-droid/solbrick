@@ -150,22 +150,68 @@ function App() {
     showMsg(`✅ Куплено ${m.amount} доля в "${m.project.name}"`);
   };
 
-  const sendChat = async () => {
-    if (!chatInput.trim()) return;
-    const userMsg: ChatMsg = { id: Date.now(), text: chatInput, from: 'user', time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) };
-    setChatMessages(prev => [...prev, userMsg]);
-    setChatInput('');
-    setChatTyping(true);
-    await new Promise(r => setTimeout(r, 1000 + Math.random() * 800));
-    const lower = chatInput.toLowerCase();
-    let response = 'Хороший вопрос! По этой теме свяжитесь с нашей командой: support@solbrick.kz 📧';
-    for (const key of Object.keys(CHAT_RESPONSES)) {
-      if (lower.includes(key)) { response = CHAT_RESPONSES[key]; break; }
-    }
-    setChatTyping(false);
-    setChatMessages(prev => [...prev, { id: Date.now()+1, text: response, from: 'bot', time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) }]);
-    if (!chatOpen) setUnreadChat(n => n + 1);
+const sendChat = async () => {
+  if (!chatInput.trim()) return;
+  const userMsg: ChatMsg = { 
+    id: Date.now(), 
+    text: chatInput, 
+    from: 'user', 
+    time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
   };
+  setChatMessages(prev => [...prev, userMsg]);
+  const currentInput = chatInput;
+  setChatInput('');
+  setChatTyping(true);
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana. 
+        Отвечай кратко, по делу, используй эмодзи. Отвечай на языке пользователя.
+        
+        Проекты: ЖК Алтын Орда (Шымкент, $50, ROI 12.4%), Нур Плаза (Алматы, $100, ROI 18.2%), 
+        Сайрам ТЦ (Шымкент, $25, ROI 9.8%), Астана Парк (Астана, $75, ROI 15.1%),
+        Silk Road (Туркестан, $60, ROI 22.5%), KazHub (Алматы, $20, ROI 11.3%),
+        Caspian View (Актау, $80, ROI 16.7%), Семей Хайтс (Семей, $35, ROI 10.5%),
+        MedCity (Астана, $90, ROI 20.1%).
+        
+        Технологии: Solana + Anchor Framework. Минимум $20. Phantom Wallet.`,
+        messages: [
+          ...chatMessages.filter(m => m.id > 1).slice(-6).map(m => ({
+            role: m.from === 'user' ? 'user' : 'assistant',
+            content: m.text
+          })),
+          { role: 'user', content: currentInput }
+        ]
+      })
+    });
+    
+    const data = await response.json();
+    const botText = data.content?.[0]?.text || 'Извините, произошла ошибка. Попробуйте позже.';
+    
+    setChatTyping(false);
+    setChatMessages(prev => [...prev, { 
+      id: Date.now()+1, 
+      text: botText, 
+      from: 'bot', 
+      time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
+    }]);
+  } catch {
+    setChatTyping(false);
+    setChatMessages(prev => [...prev, { 
+      id: Date.now()+1, 
+      text: 'Извините, ошибка соединения. Попробуйте позже или напишите на support@solbrick.kz', 
+      from: 'bot', 
+      time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
+    }]);
+  }
+  
+  if (!chatOpen) setUnreadChat(n => n + 1);
+};
 
   const tags = ['Все','Жилой','Коммерческий','Торговый','Отель','Склад'];
   const filtered = assets.filter(a => filterTag==='Все' || a.tag===filterTag).filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()) || a.location.toLowerCase().includes(searchQuery.toLowerCase()));
