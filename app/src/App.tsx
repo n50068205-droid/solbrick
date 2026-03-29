@@ -141,7 +141,6 @@ const sendChat = async () => {
   const input = chatInput.toLowerCase();
   setChatInput('');
   setChatTyping(true);
-  await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
 
   const getResponse = (q: string): string => {
     if (q.includes('привет') || q.includes('салем') || q.includes('hello')) return 'Сәлем! 👋 Мен SolBrick AI Ассистентімін. Жылжымайтын мүлікке инвестиция туралы сұрақтарыңызға жауап беремін!\n\nПривет! Я помогу вам с инвестициями в недвижимость Казахстана 🏗';
