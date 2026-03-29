@@ -131,6 +131,21 @@ function App() {
     let response = '';
 
     // Попробуем Claude AI
+    try {
+      const res = await fetch('/api/chat', {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'x-api-key': process.env.REACT_APP_ANTHROPIC_KEY || '',
+          'anthropic-version':'2023-06-01',
+          'anthropic-dangerous-direct-browser-access':'true'
+        },
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:600,
+          system:`Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana блокчейне.
+Отвечай кратко (3-5 предложений), используй эмодзи, отвечай на языке пользователя.
+
 Проекты (9 штук):
 - ЖК Алтын Орда: Шымкент, $50/доля, ROI 12.4%, Жилой
 - Нур Плаза: Алматы, $100/доля, ROI 18.2%, Коммерческий 🔥
