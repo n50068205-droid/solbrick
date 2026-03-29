@@ -25,6 +25,25 @@ const TICKER = [
   { name: "MedCity", price: "$90.00", change: "+9.3%" },
 ];
 
+const CHAT_RESPONSES: {[key: string]: string} = {
+  "привет": "Привет! 👋 Я SolBrick AI Assistant. Могу помочь с инвестициями, объяснить как работает блокчейн, рассчитать доход и многое другое!",
+  "hello": "Hello! 👋 I am SolBrick AI Assistant. How can I help you today?",
+  "как купить": "Для покупки доли:\n1️⃣ Подключите Phantom Wallet\n2️⃣ Выберите проект на главной\n3️⃣ Нажмите \"Купить долю\"\n4️⃣ Подтвердите транзакцию\n✅ Готово! Доля записана в Solana блокчейн",
+  "roi": "📈 ROI (Return on Investment) — доходность инвестиции в % годовых.\n\nНаши проекты:\n• ЖК Алтын Орда — 12.4%\n• Нур Плаза — 18.2%\n• Silk Road — 22.5%\n• MedCity — 20.1%\n\nСредний ROI по платформе — 14.8% годовых",
+  "solana": "⚡ Solana — один из самых быстрых блокчейнов:\n• 65,000 транзакций в секунду\n• Комиссия ~0.001 SOL (~$0.15)\n• Финальность за ~400мс\n• Экологичный (PoH консенсус)\n\nSolBrick использует Anchor Framework для смарт-контрактов",
+  "phantom": "👻 Phantom Wallet — лучший кошелёк для Solana:\n1. Скачайте на phantom.app\n2. Создайте новый кошелёк\n3. Сохраните seed phrase (12 слов)\n4. Подключитесь к SolBrick\n\n⚠️ Никогда не делитесь seed phrase!",
+  "минимум": "💰 Минимальные инвестиции по проектам:\n• KazHub — от $20\n• Сайрам ТЦ — от $25\n• Алтын Орда — от $50\n• Астана Парк — от $75\n• Silk Road — от $60\n\nНачать можно с любой суммы!",
+  "безопасно": "🔒 Безопасность SolBrick:\n• Смарт-контракт прошёл аудит\n• Код открытый (open source)\n• Доли записаны в блокчейн\n• Нет custody риска\n• Транзакции необратимы\n\nВаши активы принадлежат только вам!",
+  "дивиденды": "💵 Распределение дохода:\n• Аренда → делится пропорционально долям\n• Продажа объекта → автоматически через смарт-контракт\n• Выплаты происходят on-chain\n• Никаких посредников!",
+  "что такое токен": "🪙 Токен в SolBrick — это цифровое подтверждение права собственности на долю в объекте.\n\nКаждый токен = 1 доля = право на пропорциональный доход и участие в управлении объектом.",
+  "казахстан": "🇰🇿 SolBrick фокусируется на недвижимости Казахстана:\n\nГорода:\n📍 Алматы — деловой центр\n📍 Астана — столица\n📍 Шымкент — южный хаб\n📍 Туркестан — туристический\n📍 Актау — Каспийское море\n📍 Семей — Восточный Казахстан",
+  "сколько стоит": "💲 Цены долей варьируются:\n• От $20 (KazHub)\n• До $100 (Нур Плаза)\n\nЦена зависит от класса объекта, локации и ожидаемого ROI. Чем выше ROI — тем дороже доля.",
+  "риски": "⚠️ Риски инвестиций:\n• Рынок недвижимости может падать\n• Строительные риски (задержки)\n• Волатильность SOL\n\n✅ Как мы снижаем риски:\n• Диверсификация по городам\n• Страхование объектов\n• Escrow через смарт-контракт",
+  "проекты": "🏗 Сейчас доступно 9 проектов:\n\n🏗 ЖК Алтын Орда — Шымкент\n🏢 Нур Плаза — Алматы\n🏬 Сайрам ТЦ — Шымкент\n🏙 Астана Парк — Астана\n🏨 Silk Road — Туркестан\n🏭 KazHub — Алматы\n🌊 Caspian View — Актау\n🏠 Семей Хайтс — Семей\n🏥 MedCity — Астана",
+  "горячий": "🔥 Горячие проекты — те у которых продано более 70% долей.\n\nЭто означает высокий спрос! Поторопитесь — долей остаётся мало.\n\nСейчас горячие: Нур Плаза (84%) и Silk Road (70%)",
+  "команда": "👥 Команда SolBrick:\n\n👨‍💻 Разработчик: Nureke\n🏗 Технологии: Solana + Anchor\n🎯 Хакатон: National Solana Hackathon by Decentrathon 2026\n\nМы верим что блокчейн сделает недвижимость доступной для всех!",
+  "помощь": "🆘 Чем я могу помочь:\n\n• Объяснить как работает платформа\n• Рассказать о конкретном проекте\n• Помочь с подключением кошелька\n• Рассказать о рисках\n• Рассчитать доходность\n\nПросто напишите свой вопрос! 😊",
+};
 
 type Page = 'home' | 'portfolio' | 'calculator' | 'transactions';
 
@@ -133,64 +152,44 @@ function App() {
 
 const sendChat = async () => {
   if (!chatInput.trim()) return;
-  const userMsg: ChatMsg = { 
-    id: Date.now(), 
-    text: chatInput, 
-    from: 'user', 
-    time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
+  const userMsg: ChatMsg = {
+    id: Date.now(), text: chatInput, from: 'user',
+    time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})
   };
   setChatMessages(prev => [...prev, userMsg]);
-  const currentInput = chatInput;
+  const input = chatInput.toLowerCase();
   setChatInput('');
   setChatTyping(true);
+  await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana. 
-        Отвечай кратко, по делу, используй эмодзи. Отвечай на языке пользователя.
-        
-        Проекты: ЖК Алтын Орда (Шымкент, $50, ROI 12.4%), Нур Плаза (Алматы, $100, ROI 18.2%), 
-        Сайрам ТЦ (Шымкент, $25, ROI 9.8%), Астана Парк (Астана, $75, ROI 15.1%),
-        Silk Road (Туркестан, $60, ROI 22.5%), KazHub (Алматы, $20, ROI 11.3%),
-        Caspian View (Актау, $80, ROI 16.7%), Семей Хайтс (Семей, $35, ROI 10.5%),
-        MedCity (Астана, $90, ROI 20.1%).
-        
-        Технологии: Solana + Anchor Framework. Минимум $20. Phantom Wallet.`,
-        messages: [
-          ...chatMessages.filter(m => m.id > 1).slice(-6).map(m => ({
-            role: m.from === 'user' ? 'user' : 'assistant',
-            content: m.text
-          })),
-          { role: 'user', content: currentInput }
-        ]
-      })
-    });
-    
-    const data = await response.json();
-    const botText = data.content?.[0]?.text || 'Извините, произошла ошибка. Попробуйте позже.';
-    
-    setChatTyping(false);
-    setChatMessages(prev => [...prev, { 
-      id: Date.now()+1, 
-      text: botText, 
-      from: 'bot', 
-      time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
-    }]);
-  } catch {
-    setChatTyping(false);
-    setChatMessages(prev => [...prev, { 
-      id: Date.now()+1, 
-      text: 'Извините, ошибка соединения. Попробуйте позже или напишите на support@solbrick.kz', 
-      from: 'bot', 
-      time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
-    }]);
-  }
-  
+  const getResponse = (q: string): string => {
+    if (q.includes('привет') || q.includes('салем') || q.includes('hello')) return 'Сәлем! 👋 Мен SolBrick AI Ассистентімін. Жылжымайтын мүлікке инвестиция туралы сұрақтарыңызға жауап беремін!\n\nПривет! Я помогу вам с инвестициями в недвижимость Казахстана 🏗';
+    if (q.includes('как купить') || q.includes('купить долю') || q.includes('покупка')) return '💰 Как купить долю:\n\n1️⃣ Нажмите "Подключить кошелёк"\n2️⃣ Установите Phantom (phantom.app)\n3️⃣ Выберите проект\n4️⃣ Нажмите "Купить долю"\n5️⃣ Подтвердите в Phantom\n\n✅ Готово! Доля записана в Solana блокчейн навсегда';
+    if (q.includes('roi') || q.includes('доходность') || q.includes('процент')) return '📈 ROI наших проектов:\n\n🥇 Silk Road — 22.5%\n🥈 MedCity — 20.1%\n🥉 Нур Плаза — 18.2%\nCaspian View — 16.7%\nАстана Парк — 15.1%\nАлтын Орда — 12.4%\nKazHub — 11.3%\nСемей Хайтс — 10.5%\nСайрам ТЦ — 9.8%\n\n📊 Средний ROI: 14.8% годовых';
+    if (q.includes('проект') || q.includes('объект') || q.includes('список')) return '🏗 Все 9 проектов:\n\n🏗 Алтын Орда — Шымкент $50\n🏢 Нур Плаза — Алматы $100 🔥\n🏬 Сайрам ТЦ — Шымкент $25\n🏙 Астана Парк — Астана $75\n🏨 Silk Road — Туркестан $60 🔥\n🏭 KazHub — Алматы $20\n🌊 Caspian View — Актау $80\n🏠 Семей Хайтс — Семей $35\n🏥 MedCity — Астана $90';
+    if (q.includes('минимум') || q.includes('мало') || q.includes('сколько') || q.includes('дешев')) return '💵 Минимальные инвестиции:\n\n✅ KazHub — от $20\n✅ Сайрам ТЦ — от $25\n✅ Семей Хайтс — от $35\n✅ Алтын Орда — от $50\n\nНачать можно с любой суммы! Даже $20 — это уже доля в реальном объекте 🎉';
+    if (q.includes('solana') || q.includes('блокчейн') || q.includes('сеть')) return '⚡ Почему Solana:\n\n🚀 65,000 транзакций/сек\n💸 Комиссия ~$0.001\n⏱ Скорость ~400мс\n🌱 Экологичный (PoH)\n\nSolBrick использует Anchor Framework — самый надёжный инструмент для Solana смарт-контрактов';
+    if (q.includes('phantom') || q.includes('кошелёк') || q.includes('wallet')) return '👻 Phantom Wallet:\n\n1. Зайдите на phantom.app\n2. Нажмите "Download"\n3. Установите расширение\n4. Создайте кошелёк\n5. Сохраните 12 слов (seed phrase)!\n\n⚠️ НИКОГДА не давайте seed phrase никому!';
+    if (q.includes('безопас') || q.includes('надёжн') || q.includes('риск')) return '🔒 Безопасность SolBrick:\n\n✅ Смарт-контракт на Solana\n✅ Open source код на GitHub\n✅ Нет custody риска\n✅ Доли в блокчейне навсегда\n\n⚠️ Риски:\n• Волатильность рынка\n• Строительные задержки\n• Волатильность SOL\n\nДиверсифицируйте портфель!';
+    if (q.includes('алматы') || q.includes('астана') || q.includes('шымкент') || q.includes('казахстан') || q.includes('город')) return '🇰🇿 Проекты по городам:\n\n📍 Алматы — Нур Плаза, KazHub\n📍 Астана — Астана Парк, MedCity\n📍 Шымкент — Алтын Орда, Сайрам ТЦ\n📍 Туркестан — Гостиница Silk Road\n📍 Актау — Caspian View\n📍 Семей — Семей Хайтс';
+    if (q.includes('горяч') || q.includes('популяр') || q.includes('быстро')) return '🔥 Горячие проекты (мало долей):\n\n🏢 Нур Плаза — 84% продано\n🏨 Silk Road — 70% продано\n🏥 MedCity — 70% продано\n\nПоторопитесь! Долей остаётся мало 🚨';
+    if (q.includes('дивиден') || q.includes('доход') || q.includes('прибыль') || q.includes('заработ')) return '💸 Как получать доход:\n\n1. Купите доли в проекте\n2. Объект сдаётся в аренду\n3. Доход делится автоматически через смарт-контракт\n4. Средства приходят в ваш кошелёк\n\n📊 Пример: $1000 в Silk Road (22.5% ROI) = $225/год';
+    if (q.includes('калькулятор') || q.includes('рассчит') || q.includes('сколько заработ')) return '🧮 Используйте наш Калькулятор!\n\nПерейдите в раздел "Калькулятор" в меню.\n\nБыстрый расчёт:\n• $500 × 15% × 3 года = $760\n• $1000 × 20% × 5 лет = $2,488\n• $5000 × 12% × 10 лет = $15,529\n\nЧем дольше — тем больше! 📈';
+    if (q.includes('команда') || q.includes('разработчик') || q.includes('кто создал')) return '👨‍💻 Команда SolBrick:\n\nRazработчик: Nureke\nТехнологии: Solana + Anchor + React\nХакатон: National Solana Hackathon\nby Decentrathon 2026 🏆\n\nМы верим что блокчейн сделает недвижимость доступной для каждого казахстанца!';
+    if (q.includes('помощ') || q.includes('помоги') || q.includes('что умеешь')) return '🤖 Я умею:\n\n📊 Рассказать о проектах\n💰 Объяснить как купить\n📈 Рассчитать доходность\n🔒 Рассказать о безопасности\n⚡ Объяснить Solana\n👻 Помочь с Phantom\n🇰🇿 Рассказать о городах\n\nПросто спросите! 😊';
+    if (q.includes('горячий') || q.includes('hot')) return '🔥 Горячий проект — когда продано >70% долей.\n\nЭто сигнал высокого спроса! Инвесторы доверяют этому проекту.\n\nТекущие горячие:\n🏢 Нур Плаза (Алматы)\n🏨 Silk Road (Туркестан)';
+    if (q.includes('спасибо') || q.includes('рахмет') || q.includes('thanks')) return 'Пожалуйста! 😊 Рад помочь!\n\nЕсли остались вопросы — пишите!\nИли начните инвестировать прямо сейчас 🚀';
+    if (q.includes('пока') || q.includes('до свидан') || q.includes('bye')) return 'До свидания! 👋\n\nУдачных инвестиций! 💰\nsupport@solbrick.kz';
+    return `🤔 Хороший вопрос!\n\nЯ могу помочь с:\n• Информацией о проектах\n• Как купить долю\n• ROI и доходность\n• Безопасность\n• Phantom Wallet\n\nИли напишите на support@solbrick.kz 📧`;
+  };
+
+  setChatTyping(false);
+  setChatMessages(prev => [...prev, {
+    id: Date.now()+1,
+    text: getResponse(input),
+    from: 'bot',
+    time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})
+  }]);
   if (!chatOpen) setUnreadChat(n => n + 1);
 };
 
