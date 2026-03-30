@@ -21,7 +21,7 @@ const TICKER = [
   {name:"MedCity",price:"$90.00",change:"+9.3%"},
 ];
 
-type Page = 'home'|'portfolio'|'calculator'|'transactions';
+type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map';
 interface ChatMsg { id:number; text:string; from:'user'|'bot'; time:string; }
 
 const S = {
@@ -276,9 +276,51 @@ function App() {
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
           <span style={{background:S.bg3,color:S.green,fontSize:9,padding:'2px 6px',borderRadius:4,border:`1px solid ${S.green}30`,fontWeight:700,letterSpacing:1,animation:'glow 3s ease-in-out infinite'}}>DEVNET</span>
         </div>
+
+        {activePage==='map'&&(
+          <div style={{animation:'fadeUp 0.3s ease'}}>
+            <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Карта проектов</h2>
+            <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
+              <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
+                <path d="M 50 180 L 80 160 L 120 150 L 160 140 L 200 130 L 250 120 L 300 115 L 350 110 L 400 108 L 450 112 L 500 118 L 550 125 L 600 135 L 640 148 L 670 165 L 690 185 L 700 210 L 695 235 L 680 255 L 660 270 L 630 280 L 600 285 L 560 288 L 520 290 L 480 292 L 440 290 L 400 285 L 360 278 L 320 270 L 280 260 L 240 250 L 200 245 L 160 248 L 130 258 L 100 268 L 70 270 L 50 260 L 35 240 L 30 215 L 35 195 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
+                {[
+                  {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
+                  {x:380,y:185,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
+                  {x:490,y:250,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
+                  {x:220,y:195,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
+                  {x:100,y:200,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
+                  {x:600,y:160,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
+                ].map((city,i)=>(
+                  <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
+                    <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
+                    <circle cx={city.x} cy={city.y} r="8" fill={city.color} opacity="0.8"/>
+                    <circle cx={city.x} cy={city.y} r="4" fill={city.color}/>
+                    <text x={city.x} y={city.y+24} fill="white" fontSize="10" textAnchor="middle" fontFamily="Segoe UI" fontWeight="600">{city.name}</text>
+                    <text x={city.x} y={city.y+36} fill={city.color} fontSize="9" textAnchor="middle" fontFamily="Segoe UI">{city.projects.length} проект{city.projects.length>1?'а':''}</text>
+                  </g>
+                ))}
+              </svg>
+              <div style={{padding:'16px',borderTop:`1px solid ${S.border}`,display:'flex',gap:12,flexWrap:'wrap'}}>
+                {[
+                  {city:"Шымкент",count:2,color:"#00C896"},{city:"Астана",count:2,color:"#A78BFA"},
+                  {city:"Алматы",count:2,color:"#FF6B35"},{city:"Туркестан",count:1,color:"#F59E0B"},
+                  {city:"Актау",count:1,color:"#06B6D4"},{city:"Семей",count:1,color:"#84CC16"},
+                ].map((c,i)=>(
+                  <button key={i} onClick={()=>{setActivePage('home');setSearchQuery(c.city);}} className="btn"
+                    style={{display:'flex',alignItems:'center',gap:6,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'6px 12px',color:S.text,fontSize:12}}>
+                    <div style={{width:8,height:8,borderRadius:'50%',background:c.color}}/>
+                    {c.city} · {c.count} объект{c.count>1?'а':''}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
-            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История']].map(([page,label])=>(
+            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта']].map(([page,label])=>(
               <button key={page} onClick={()=>setActivePage(page as Page)}
                 style={{background:'transparent',border:'none',color:activePage===page?S.green:S.text2,padding:'6px 14px',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:activePage===page?600:400,borderBottom:activePage===page?`2px solid ${S.green}`:'2px solid transparent'}}>
                 {label}
@@ -728,6 +770,48 @@ function App() {
           </div>
         )}
 
+
+        {activePage==='map'&&(
+          <div style={{animation:'fadeUp 0.3s ease'}}>
+            <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Карта проектов</h2>
+            <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
+              <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
+                <path d="M 50 180 L 80 160 L 120 150 L 160 140 L 200 130 L 250 120 L 300 115 L 350 110 L 400 108 L 450 112 L 500 118 L 550 125 L 600 135 L 640 148 L 670 165 L 690 185 L 700 210 L 695 235 L 680 255 L 660 270 L 630 280 L 600 285 L 560 288 L 520 290 L 480 292 L 440 290 L 400 285 L 360 278 L 320 270 L 280 260 L 240 250 L 200 245 L 160 248 L 130 258 L 100 268 L 70 270 L 50 260 L 35 240 L 30 215 L 35 195 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
+                {[
+                  {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
+                  {x:380,y:185,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
+                  {x:490,y:250,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
+                  {x:220,y:195,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
+                  {x:100,y:200,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
+                  {x:600,y:160,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
+                ].map((city,i)=>(
+                  <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
+                    <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
+                    <circle cx={city.x} cy={city.y} r="8" fill={city.color} opacity="0.8"/>
+                    <circle cx={city.x} cy={city.y} r="4" fill={city.color}/>
+                    <text x={city.x} y={city.y+24} fill="white" fontSize="10" textAnchor="middle" fontFamily="Segoe UI" fontWeight="600">{city.name}</text>
+                    <text x={city.x} y={city.y+36} fill={city.color} fontSize="9" textAnchor="middle" fontFamily="Segoe UI">{city.projects.length} проект{city.projects.length>1?'а':''}</text>
+                  </g>
+                ))}
+              </svg>
+              <div style={{padding:'16px',borderTop:`1px solid ${S.border}`,display:'flex',gap:12,flexWrap:'wrap'}}>
+                {[
+                  {city:"Шымкент",count:2,color:"#00C896"},{city:"Астана",count:2,color:"#A78BFA"},
+                  {city:"Алматы",count:2,color:"#FF6B35"},{city:"Туркестан",count:1,color:"#F59E0B"},
+                  {city:"Актау",count:1,color:"#06B6D4"},{city:"Семей",count:1,color:"#84CC16"},
+                ].map((c,i)=>(
+                  <button key={i} onClick={()=>{setActivePage('home');setSearchQuery(c.city);}} className="btn"
+                    style={{display:'flex',alignItems:'center',gap:6,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'6px 12px',color:S.text,fontSize:12}}>
+                    <div style={{width:8,height:8,borderRadius:'50%',background:c.color}}/>
+                    {c.city} · {c.count} объект{c.count>1?'а':''}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         {!isMobile&&(
           <div style={{marginTop:40,paddingTop:16,borderTop:`1px solid ${S.border2}`,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <span style={{fontSize:11,color:S.text3}}>SolBrick © 2026 · National Solana Hackathon by Decentrathon</span>
@@ -739,7 +823,7 @@ function App() {
       {/* Mobile Bottom Nav */}
       {isMobile&&(
         <div style={{position:'fixed',bottom:0,left:0,right:0,zIndex:200,background:S.bg2,borderTop:`1px solid ${S.border}`,display:'flex',justifyContent:'space-around',padding:'8px 0 18px',backdropFilter:'blur(20px)'}}>
-          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История']].map(([page,icon,label])=>(
+          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['map','🗺','Карта']].map(([page,icon,label])=>(
             <button key={page} onClick={()=>setActivePage(page as Page)}
               style={{background:'transparent',border:'none',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'4px 10px',color:activePage===page?S.green:S.text2,transition:'all 0.2s'}}>
               <span style={{fontSize:22,transition:'transform 0.2s',transform:activePage===page?'scale(1.15)':'scale(1)'}}>{icon}</span>
