@@ -283,7 +283,8 @@ function App() {
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
               <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 50 180 L 80 160 L 120 150 L 160 140 L 200 130 L 250 120 L 300 115 L 350 110 L 400 108 L 450 112 L 500 118 L 550 125 L 600 135 L 640 148 L 670 165 L 690 185 L 700 210 L 695 235 L 680 255 L 660 270 L 630 280 L 600 285 L 560 288 L 520 290 L 480 292 L 440 290 L 400 285 L 360 278 L 320 270 L 280 260 L 240 250 L 200 245 L 160 248 L 130 258 L 100 268 L 70 270 L 50 260 L 35 240 L 30 215 L 35 195 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <path d="M 55 140 L 75 125 L 100 118 L 130 112 L 155 108 L 175 100 L 195 92 L 215 88 L 235 90 L 255 95 L 270 88 L 285 80 L 305 78 L 325 82 L 345 85 L 365 82 L 385 78 L 405 75 L 425 78 L 445 82 L 465 85 L 485 88 L 510 92 L 535 98 L 558 108 L 575 120 L 590 135 L 600 150 L 608 168 L 610 185 L 605 200 L 595 212 L 578 222 L 558 228 L 535 232 L 510 238 L 488 248 L 468 260 L 448 268 L 425 272 L 400 275 L 375 272 L 350 268 L 325 262 L 300 255 L 275 248 L 250 245 L 225 248 L 202 255 L 182 262 L 162 268 L 142 272 L 120 270 L 100 262 L 80 252 L 62 240 L 48 225 L 40 208 L 38 190 L 42 172 L 50 155 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+<path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
                 <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
                 {[
                   {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
@@ -777,7 +778,8 @@ function App() {
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
               <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 50 180 L 80 160 L 120 150 L 160 140 L 200 130 L 250 120 L 300 115 L 350 110 L 400 108 L 450 112 L 500 118 L 550 125 L 600 135 L 640 148 L 670 165 L 690 185 L 700 210 L 695 235 L 680 255 L 660 270 L 630 280 L 600 285 L 560 288 L 520 290 L 480 292 L 440 290 L 400 285 L 360 278 L 320 270 L 280 260 L 240 250 L 200 245 L 160 248 L 130 258 L 100 268 L 70 270 L 50 260 L 35 240 L 30 215 L 35 195 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <path d="M 55 140 L 75 125 L 100 118 L 130 112 L 155 108 L 175 100 L 195 92 L 215 88 L 235 90 L 255 95 L 270 88 L 285 80 L 305 78 L 325 82 L 345 85 L 365 82 L 385 78 L 405 75 L 425 78 L 445 82 L 465 85 L 485 88 L 510 92 L 535 98 L 558 108 L 575 120 L 590 135 L 600 150 L 608 168 L 610 185 L 605 200 L 595 212 L 578 222 L 558 228 L 535 232 L 510 238 L 488 248 L 468 260 L 448 268 L 425 272 L 400 275 L 375 272 L 350 268 L 325 262 L 300 255 L 275 248 L 250 245 L 225 248 L 202 255 L 182 262 L 162 268 L 142 272 L 120 270 L 100 262 L 80 252 L 62 240 L 48 225 L 40 208 L 38 190 L 42 172 L 50 155 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+<path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
                 <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
                 {[
                   {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
