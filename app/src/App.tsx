@@ -283,16 +283,16 @@ function App() {
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
               <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 55 140 L 75 125 L 100 118 L 130 112 L 155 108 L 175 100 L 195 92 L 215 88 L 235 90 L 255 95 L 270 88 L 285 80 L 305 78 L 325 82 L 345 85 L 365 82 L 385 78 L 405 75 L 425 78 L 445 82 L 465 85 L 485 88 L 510 92 L 535 98 L 558 108 L 575 120 L 590 135 L 600 150 L 608 168 L 610 185 L 605 200 L 595 212 L 578 222 L 558 228 L 535 232 L 510 238 L 488 248 L 468 260 L 448 268 L 425 272 L 400 275 L 375 272 L 350 268 L 325 262 L 300 255 L 275 248 L 250 245 L 225 248 L 202 255 L 182 262 L 162 268 L 142 272 L 120 270 L 100 262 L 80 252 L 62 240 L 48 225 L 40 208 L 38 190 L 42 172 L 50 155 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <path d="M 148 62 L 162 58 L 178 55 L 195 54 L 210 52 L 225 50 L 238 52 L 248 56 L 255 52 L 262 48 L 272 46 L 285 48 L 295 52 L 308 50 L 318 46 L 330 44 L 342 46 L 352 50 L 362 48 L 372 45 L 382 44 L 392 46 L 402 50 L 415 52 L 428 54 L 440 52 L 450 48 L 462 46 L 475 48 L 488 54 L 500 60 L 512 68 L 522 78 L 530 90 L 535 102 L 538 115 L 535 128 L 528 138 L 518 145 L 505 150 L 492 153 L 478 155 L 465 158 L 452 162 L 440 168 L 428 175 L 418 183 L 410 192 L 405 202 L 402 213 L 400 225 L 398 235 L 392 242 L 382 246 L 370 248 L 355 248 L 340 245 L 325 240 L 310 235 L 295 232 L 280 232 L 268 236 L 258 242 L 248 248 L 238 252 L 225 254 L 212 252 L 200 248 L 188 242 L 178 235 L 168 228 L 158 222 L 145 218 L 130 216 L 115 218 L 102 222 L 90 228 L 78 232 L 65 232 L 52 228 L 42 220 L 35 210 L 30 198 L 28 185 L 30 172 L 35 160 L 42 150 L 50 142 L 42 138 L 35 132 L 30 122 L 28 110 L 32 98 L 40 88 L 50 80 L 62 74 L 75 70 L 90 66 L 105 63 L 120 61 L 135 61 Z" fill="#1e3a5f" stroke="#3a6fa8" strokeWidth="1.5"/>
 <path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
                 <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
                 {[
-                  {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
-                  {x:380,y:185,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
-                  {x:490,y:250,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
-                  {x:220,y:195,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
-                  {x:100,y:200,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
-                  {x:600,y:160,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
+                  {x:265,y:222,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
+                  {x:345,y:118,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
+                  {x:415,y:205,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
+                  {x:228,y:210,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
+                  {x:52,y:185,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
+                  {x:478,y:118,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
                 ].map((city,i)=>(
                   <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
                     <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
@@ -778,16 +778,16 @@ function App() {
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
               <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 55 140 L 75 125 L 100 118 L 130 112 L 155 108 L 175 100 L 195 92 L 215 88 L 235 90 L 255 95 L 270 88 L 285 80 L 305 78 L 325 82 L 345 85 L 365 82 L 385 78 L 405 75 L 425 78 L 445 82 L 465 85 L 485 88 L 510 92 L 535 98 L 558 108 L 575 120 L 590 135 L 600 150 L 608 168 L 610 185 L 605 200 L 595 212 L 578 222 L 558 228 L 535 232 L 510 238 L 488 248 L 468 260 L 448 268 L 425 272 L 400 275 L 375 272 L 350 268 L 325 262 L 300 255 L 275 248 L 250 245 L 225 248 L 202 255 L 182 262 L 162 268 L 142 272 L 120 270 L 100 262 L 80 252 L 62 240 L 48 225 L 40 208 L 38 190 L 42 172 L 50 155 Z" fill="#1e3a5f" stroke="#2a4f7a" strokeWidth="2"/>
+                <path d="M 148 62 L 162 58 L 178 55 L 195 54 L 210 52 L 225 50 L 238 52 L 248 56 L 255 52 L 262 48 L 272 46 L 285 48 L 295 52 L 308 50 L 318 46 L 330 44 L 342 46 L 352 50 L 362 48 L 372 45 L 382 44 L 392 46 L 402 50 L 415 52 L 428 54 L 440 52 L 450 48 L 462 46 L 475 48 L 488 54 L 500 60 L 512 68 L 522 78 L 530 90 L 535 102 L 538 115 L 535 128 L 528 138 L 518 145 L 505 150 L 492 153 L 478 155 L 465 158 L 452 162 L 440 168 L 428 175 L 418 183 L 410 192 L 405 202 L 402 213 L 400 225 L 398 235 L 392 242 L 382 246 L 370 248 L 355 248 L 340 245 L 325 240 L 310 235 L 295 232 L 280 232 L 268 236 L 258 242 L 248 248 L 238 252 L 225 254 L 212 252 L 200 248 L 188 242 L 178 235 L 168 228 L 158 222 L 145 218 L 130 216 L 115 218 L 102 222 L 90 228 L 78 232 L 65 232 L 52 228 L 42 220 L 35 210 L 30 198 L 28 185 L 30 172 L 35 160 L 42 150 L 50 142 L 42 138 L 35 132 L 30 122 L 28 110 L 32 98 L 40 88 L 50 80 L 62 74 L 75 70 L 90 66 L 105 63 L 120 61 L 135 61 Z" fill="#1e3a5f" stroke="#3a6fa8" strokeWidth="1.5"/>
 <path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
                 <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
                 {[
-                  {x:280,y:230,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
-                  {x:380,y:185,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
-                  {x:490,y:250,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
-                  {x:220,y:195,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
-                  {x:100,y:200,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
-                  {x:600,y:160,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
+                  {x:265,y:222,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
+                  {x:345,y:118,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
+                  {x:415,y:205,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
+                  {x:228,y:210,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
+                  {x:52,y:185,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
+                  {x:478,y:118,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
                 ].map((city,i)=>(
                   <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
                     <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
