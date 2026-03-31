@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const PROJECTS = [
-  { id: 1, priceHistory:[42,44,45,47,48,50,52], name: "ЖК Алтын Орда", location: "Шымкент", totalShares: 1000, soldShares: 340, pricePerShare: 50, roi: "12.4%", roiNum: 12.4, image: "🏗️", tag: "Жилой", color: "#00C896", desc: "Современный жилой комплекс в центре Шымкента. 24 этажа, 480 квартир.", area: "45,000 м²", completion: "Q4 2026", photos: ["https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80","https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80","https://images.unsplash.com/photo-1460317442991-0ec209397118?w=600&q=80"] },
-  { id: 2, priceHistory:[85,88,90,94,96,100,104], name: "Бизнес-центр Нур Плаза", location: "Алматы", totalShares: 500, soldShares: 420, pricePerShare: 100, roi: "18.2%", roiNum: 18.2, image: "🏢", tag: "Коммерческий", color: "#FF6B35", desc: "Премиальный бизнес-центр класса A в деловом районе Алматы.", area: "28,000 м²", completion: "Q2 2026", photos: ["https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80","https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80","https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80"] },
-  { id: 3, priceHistory:[20,21,22,23,24,25,26], name: "Торговый комплекс Сайрам", location: "Шымкент", totalShares: 2000, soldShares: 800, pricePerShare: 25, roi: "9.8%", roiNum: 9.8, image: "🏬", tag: "Торговый", color: "#4A9EFF", desc: "Крупный торгово-развлекательный центр на юге Казахстана.", area: "62,000 м²", completion: "Q1 2027", photos: ["https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=600&q=80","https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80","https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80"] },
-  { id: 4, priceHistory:[62,65,68,70,72,75,78], name: "Жилой квартал Астана Парк", location: "Астана", totalShares: 1500, soldShares: 200, pricePerShare: 75, roi: "15.1%", roiNum: 15.1, image: "🏙️", tag: "Жилой", color: "#A78BFA", desc: "Элитный жилой квартал рядом с Байтереком.", area: "80,000 м²", completion: "Q3 2027", photos: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80","https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80","https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80"] },
-  { id: 5, priceHistory:[48,51,54,56,58,60,63], name: "Гостиница Silk Road", location: "Туркестан", totalShares: 800, soldShares: 560, pricePerShare: 60, roi: "22.5%", roiNum: 22.5, image: "🏨", tag: "Отель", color: "#F59E0B", desc: "5-звёздочный отель у мавзолея Ходжа Ахмета Яссауи.", area: "18,000 м²", completion: "Q2 2026", photos: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80","https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80","https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=80"] },
-  { id: 6, priceHistory:[16,17,18,18,19,20,21], name: "Логистический центр KazHub", location: "Алматы", totalShares: 3000, soldShares: 450, pricePerShare: 20, roi: "11.3%", roiNum: 11.3, image: "🏭", tag: "Склад", color: "#EC4899", desc: "Современный логистический хаб у международного аэропорта Алматы.", area: "120,000 м²", completion: "Q4 2026", photos: ["https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80","https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80","https://images.unsplash.com/photo-1565891741441-64926e3838b0?w=600&q=80"] },
-  { id: 7, priceHistory:[65,68,70,73,76,80,84], name: "Апарт-отель Caspian View", location: "Актау", totalShares: 600, soldShares: 180, pricePerShare: 80, roi: "16.7%", roiNum: 16.7, image: "🌊", tag: "Отель", color: "#06B6D4", desc: "Апарт-отель с видом на Каспийское море.", area: "12,000 м²", completion: "Q1 2027", photos: ["https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80","https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80","https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80"] },
-  { id: 8, priceHistory:[28,29,30,31,33,35,37], name: "ЖК Семей Хайтс", location: "Семей", totalShares: 1200, soldShares: 90, pricePerShare: 35, roi: "10.5%", roiNum: 10.5, image: "🏠", tag: "Жилой", color: "#84CC16", desc: "Современный жилой комплекс на берегу Иртыша. 16 этажей.", area: "38,000 м²", completion: "Q2 2027", photos: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80","https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=600&q=80","https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"] },
-  { id: 9, priceHistory:[72,76,80,84,87,90,94], name: "Медицинский центр MedCity", location: "Астана", totalShares: 900, soldShares: 630, pricePerShare: 90, roi: "20.1%", roiNum: 20.1, image: "🏥", tag: "Коммерческий", color: "#F43F5E", desc: "Многопрофильный медицинский центр европейского уровня.", area: "22,000 м²", completion: "Q3 2026", photos: ["https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80","https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&q=80","https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80"] },
+  { id: 1, name: "ЖК Алтын Орда", location: "Шымкент", totalShares: 1000, soldShares: 340, pricePerShare: 50, roi: "12.4%", roiNum: 12.4, image: "🏗️", tag: "Жилой", color: "#00C896", desc: "Современный жилой комплекс в центре Шымкента. 24 этажа, 480 квартир.", area: "45,000 м²", completion: "Q4 2026", photos: ["https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80","https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80","https://images.unsplash.com/photo-1460317442991-0ec209397118?w=600&q=80"] },
+  { id: 2, name: "Бизнес-центр Нур Плаза", location: "Алматы", totalShares: 500, soldShares: 420, pricePerShare: 100, roi: "18.2%", roiNum: 18.2, image: "🏢", tag: "Коммерческий", color: "#FF6B35", desc: "Премиальный бизнес-центр класса A в деловом районе Алматы.", area: "28,000 м²", completion: "Q2 2026", photos: ["https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80","https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&q=80","https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80"] },
+  { id: 3, name: "Торговый комплекс Сайрам", location: "Шымкент", totalShares: 2000, soldShares: 800, pricePerShare: 25, roi: "9.8%", roiNum: 9.8, image: "🏬", tag: "Торговый", color: "#4A9EFF", desc: "Крупный торгово-развлекательный центр на юге Казахстана.", area: "62,000 м²", completion: "Q1 2027", photos: ["https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?w=600&q=80","https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80","https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80"] },
+  { id: 4, name: "Жилой квартал Астана Парк", location: "Астана", totalShares: 1500, soldShares: 200, pricePerShare: 75, roi: "15.1%", roiNum: 15.1, image: "🏙️", tag: "Жилой", color: "#A78BFA", desc: "Элитный жилой квартал рядом с Байтереком.", area: "80,000 м²", completion: "Q3 2027", photos: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80","https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80","https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80"] },
+  { id: 5, name: "Гостиница Silk Road", location: "Туркестан", totalShares: 800, soldShares: 560, pricePerShare: 60, roi: "22.5%", roiNum: 22.5, image: "🏨", tag: "Отель", color: "#F59E0B", desc: "5-звёздочный отель у мавзолея Ходжа Ахмета Яссауи.", area: "18,000 м²", completion: "Q2 2026", photos: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80","https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80","https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=80"] },
+  { id: 6, name: "Логистический центр KazHub", location: "Алматы", totalShares: 3000, soldShares: 450, pricePerShare: 20, roi: "11.3%", roiNum: 11.3, image: "🏭", tag: "Склад", color: "#EC4899", desc: "Современный логистический хаб у международного аэропорта Алматы.", area: "120,000 м²", completion: "Q4 2026", photos: ["https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80","https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80","https://images.unsplash.com/photo-1565891741441-64926e3838b0?w=600&q=80"] },
+  { id: 7, name: "Апарт-отель Caspian View", location: "Актау", totalShares: 600, soldShares: 180, pricePerShare: 80, roi: "16.7%", roiNum: 16.7, image: "🌊", tag: "Отель", color: "#06B6D4", desc: "Апарт-отель с видом на Каспийское море.", area: "12,000 м²", completion: "Q1 2027", photos: ["https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80","https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80","https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80"] },
+  { id: 8, name: "ЖК Семей Хайтс", location: "Семей", totalShares: 1200, soldShares: 90, pricePerShare: 35, roi: "10.5%", roiNum: 10.5, image: "🏠", tag: "Жилой", color: "#84CC16", desc: "Современный жилой комплекс на берегу Иртыша. 16 этажей.", area: "38,000 м²", completion: "Q2 2027", photos: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80","https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=600&q=80","https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80"] },
+  { id: 9, name: "Медицинский центр MedCity", location: "Астана", totalShares: 900, soldShares: 630, pricePerShare: 90, roi: "20.1%", roiNum: 20.1, image: "🏥", tag: "Коммерческий", color: "#F43F5E", desc: "Многопрофильный медицинский центр европейского уровня.", area: "22,000 м²", completion: "Q3 2026", photos: ["https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80","https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&q=80","https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=600&q=80"] },
 ];
 
 const TICKER = [
@@ -98,16 +98,11 @@ function App() {
           const conn = new Connection(clusterApiUrl('devnet'), 'confirmed');
           const bal = await conn.getBalance(new PublicKey(pubkey));
           setSolBalance(bal / 1e9);
-          // Получаем реальные транзакции из блокчейна
-          const sigs = await conn.getSignaturesForAddress(new PublicKey(pubkey), {limit: 10});
-          const realTxs = sigs.map((sig, i) => ({
-            id: i,
-            project: 'On-chain транзакция',
-            amount: 1,
-            cost: 0,
-            date: sig.blockTime ? new Date(sig.blockTime * 1000).toLocaleString('ru-RU') : 'Недавно',
-            hash: sig.signature.slice(0, 8).toUpperCase(),
-            onchain: true
+          const sigs = await conn.getSignaturesForAddress(new PublicKey(pubkey), {limit:10});
+          const realTxs = sigs.map((sig,i) => ({
+            id: i, project: 'On-chain транзакция', amount: 1, cost: 0,
+            date: sig.blockTime ? new Date(sig.blockTime*1000).toLocaleString('ru-RU') : 'Недавно',
+            hash: sig.signature.slice(0,8).toUpperCase(), onchain: true
           }));
           if (realTxs.length > 0) setTransactions(realTxs);
         } catch { setSolBalance(0); }
@@ -145,73 +140,37 @@ function App() {
     const q = chatInput.toLowerCase();
     setChatInput('');
     setChatTyping(true);
-
     let response = '';
-
-    // Попробуем Claude AI
     try {
       const res = await fetch('/api/chat', {
         method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'x-api-key': process.env.REACT_APP_ANTHROPIC_KEY || '',
-          'anthropic-version':'2023-06-01',
-          'anthropic-dangerous-direct-browser-access':'true'
-        },
+        headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
           model:'claude-sonnet-4-20250514',
           max_tokens:600,
-          system:`Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana блокчейне.
-Отвечай кратко (3-5 предложений), используй эмодзи, отвечай на языке пользователя.
-
-Проекты (9 штук):
-- ЖК Алтын Орда: Шымкент, $50/доля, ROI 12.4%, Жилой
-- Нур Плаза: Алматы, $100/доля, ROI 18.2%, Коммерческий 🔥
-- Сайрам ТЦ: Шымкент, $25/доля, ROI 9.8%, Торговый
-- Астана Парк: Астана, $75/доля, ROI 15.1%, Жилой
-- Silk Road: Туркестан, $60/доля, ROI 22.5%, Отель 🔥
-- KazHub: Алматы, $20/доля, ROI 11.3%, Склад
-- Caspian View: Актау, $80/доля, ROI 16.7%, Отель
-- Семей Хайтс: Семей, $35/доля, ROI 10.5%, Жилой
-- MedCity: Астана, $90/доля, ROI 20.1%, Коммерческий
-
-Технологии: Solana + Anchor Framework. Минимум $20. Phantom Wallet.`,
+          system:`Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana блокчейне. Отвечай кратко (3-5 предложений), используй эмодзи, отвечай на языке пользователя. 9 проектов от $20 до $100. ROI от 9.8% до 22.5%. Технологии: Solana + Anchor Framework. Минимум $20. Phantom Wallet.`,
           messages:[{role:'user',content:userInput}]
         })
       });
       const data = await res.json();
       if (data.content?.[0]?.text) response = data.content[0].text;
     } catch {}
-
-    // Если AI не ответил — локальные ответы
     if (!response) {
       await new Promise(r=>setTimeout(r,600));
-      if (q.includes('привет')||q.includes('салем')||q.includes('hello')) response='Сәлем! 👋 Я SolBrick AI Assistant. Помогу с инвестициями в недвижимость Казахстана на Solana!';
-      else if (q.includes('как купить')||q.includes('купить')) response='💰 Как купить долю:\n1️⃣ Подключите Phantom Wallet\n2️⃣ Выберите проект\n3️⃣ Нажмите "Купить долю"\n4️⃣ Подтвердите транзакцию\n✅ Доля записана в Solana блокчейн!';
-      else if (q.includes('roi')||q.includes('доходность')) response='📈 Лучший ROI:\n🥇 Silk Road — 22.5%\n🥈 MedCity — 20.1%\n🥉 Нур Плаза — 18.2%\n\nСредний ROI: 14.8% годовых';
-      else if (q.includes('минимум')||q.includes('дешев')) response='💵 Минимум от $20 (KazHub)!\nДаже $20 = реальная доля в объекте 🎉';
-      else if (q.includes('solana')||q.includes('блокчейн')) response='⚡ Solana: 65,000 транзакций/сек, комиссия ~$0.001, скорость 400мс!\nSolBrick использует Anchor Framework.';
-      else if (q.includes('phantom')||q.includes('кошелёк')) response='👻 Phantom Wallet:\n1. phantom.app\n2. Установите расширение\n3. Создайте кошелёк\n⚠️ Сохраните seed phrase!';
-      else if (q.includes('проект')||q.includes('список')) response='🏗 9 проектов от $20 до $100!\nГорода: Алматы, Астана, Шымкент, Туркестан, Актау, Семей\n🔥 Горячие: Нур Плаза, Silk Road, MedCity';
-      else if (q.includes('спасибо')||q.includes('рахмет')) response='Пожалуйста! 😊 Удачных инвестиций! 🚀';
-      else response='🤔 Спросите меня о проектах, ROI, как купить долю или о Solana!\nИли напишите на support@solbrick.kz 📧';
+      if (q.includes('привет')||q.includes('салем')) response='Сәлем! 👋 Я SolBrick AI Assistant. Помогу с инвестициями в недвижимость Казахстана на Solana!';
+      else if (q.includes('купить')) response='💰 Как купить долю:\n1️⃣ Подключите Phantom Wallet\n2️⃣ Выберите проект\n3️⃣ Нажмите "Купить долю"\n✅ Доля в Solana блокчейне!';
+      else if (q.includes('roi')||q.includes('доходность')) response='📈 Лучший ROI:\n🥇 Silk Road — 22.5%\n🥈 MedCity — 20.1%\n🥉 Нур Плаза — 18.2%\nСредний: 14.8% годовых';
+      else if (q.includes('минимум')) response='💵 Минимум $20 (KazHub)! Даже $20 = реальная доля в объекте 🎉';
+      else response='🤔 Спросите о проектах, ROI или Solana!\nПоддержка: support@solbrick.kz 📧';
     }
-
     setChatTyping(false);
-    setChatMessages(prev=>[...prev,{
-      id:Date.now()+1, text:response, from:'bot',
-      time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})
-    }]);
+    setChatMessages(prev=>[...prev,{id:Date.now()+1,text:response,from:'bot',time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}]);
     if (!chatOpen) setUnreadChat(n=>n+1);
   };
 
   const tags = ['Все','Жилой','Коммерческий','Торговый','Отель','Склад'];
-  const filtered = assets
-    .filter(a=>filterTag==='Все'||a.tag===filterTag)
-    .filter(a=>a.name.toLowerCase().includes(searchQuery.toLowerCase())||a.location.toLowerCase().includes(searchQuery.toLowerCase()));
-  const totalPortfolio = Object.entries(portfolio).reduce((sum,[id,shares])=>{
-    const p=assets.find(a=>a.id===parseInt(id)); return sum+(p?shares*p.pricePerShare:0);
-  },0);
+  const filtered = assets.filter(a=>filterTag==='Все'||a.tag===filterTag).filter(a=>a.name.toLowerCase().includes(searchQuery.toLowerCase())||a.location.toLowerCase().includes(searchQuery.toLowerCase()));
+  const totalPortfolio = Object.entries(portfolio).reduce((sum,[id,shares])=>{const p=assets.find(a=>a.id===parseInt(id));return sum+(p?shares*p.pricePerShare:0);},0);
   const calcResult = calcAmount * Math.pow(1+calcRoi/100, calcYears);
 
   const onboardSteps = [
@@ -294,49 +253,6 @@ function App() {
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
           <span style={{background:S.bg3,color:S.green,fontSize:9,padding:'2px 6px',borderRadius:4,border:`1px solid ${S.green}30`,fontWeight:700,letterSpacing:1,animation:'glow 3s ease-in-out infinite'}}>DEVNET</span>
         </div>
-
-        {activePage==='map'&&(
-          <div style={{animation:'fadeUp 0.3s ease'}}>
-            <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Карта проектов</h2>
-            <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
-            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
-              <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 148 62 L 162 58 L 178 55 L 195 54 L 210 52 L 225 50 L 238 52 L 248 56 L 255 52 L 262 48 L 272 46 L 285 48 L 295 52 L 308 50 L 318 46 L 330 44 L 342 46 L 352 50 L 362 48 L 372 45 L 382 44 L 392 46 L 402 50 L 415 52 L 428 54 L 440 52 L 450 48 L 462 46 L 475 48 L 488 54 L 500 60 L 512 68 L 522 78 L 530 90 L 535 102 L 538 115 L 535 128 L 528 138 L 518 145 L 505 150 L 492 153 L 478 155 L 465 158 L 452 162 L 440 168 L 428 175 L 418 183 L 410 192 L 405 202 L 402 213 L 400 225 L 398 235 L 392 242 L 382 246 L 370 248 L 355 248 L 340 245 L 325 240 L 310 235 L 295 232 L 280 232 L 268 236 L 258 242 L 248 248 L 238 252 L 225 254 L 212 252 L 200 248 L 188 242 L 178 235 L 168 228 L 158 222 L 145 218 L 130 216 L 115 218 L 102 222 L 90 228 L 78 232 L 65 232 L 52 228 L 42 220 L 35 210 L 30 198 L 28 185 L 30 172 L 35 160 L 42 150 L 50 142 L 42 138 L 35 132 L 30 122 L 28 110 L 32 98 L 40 88 L 50 80 L 62 74 L 75 70 L 90 66 L 105 63 L 120 61 L 135 61 Z" fill="#1e3a5f" stroke="#3a6fa8" strokeWidth="1.5"/>
-<path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
-                <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
-                {[
-                  {x:265,y:222,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
-                  {x:345,y:118,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
-                  {x:415,y:205,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
-                  {x:228,y:210,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
-                  {x:52,y:185,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
-                  {x:478,y:118,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
-                ].map((city,i)=>(
-                  <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
-                    <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
-                    <circle cx={city.x} cy={city.y} r="8" fill={city.color} opacity="0.8"/>
-                    <circle cx={city.x} cy={city.y} r="4" fill={city.color}/>
-                    <text x={city.x} y={city.y+24} fill="white" fontSize="10" textAnchor="middle" fontFamily="Segoe UI" fontWeight="600">{city.name}</text>
-                    <text x={city.x} y={city.y+36} fill={city.color} fontSize="9" textAnchor="middle" fontFamily="Segoe UI">{city.projects.length} проект{city.projects.length>1?'а':''}</text>
-                  </g>
-                ))}
-              </svg>
-              <div style={{padding:'16px',borderTop:`1px solid ${S.border}`,display:'flex',gap:12,flexWrap:'wrap'}}>
-                {[
-                  {city:"Шымкент",count:2,color:"#00C896"},{city:"Астана",count:2,color:"#A78BFA"},
-                  {city:"Алматы",count:2,color:"#FF6B35"},{city:"Туркестан",count:1,color:"#F59E0B"},
-                  {city:"Актау",count:1,color:"#06B6D4"},{city:"Семей",count:1,color:"#84CC16"},
-                ].map((c,i)=>(
-                  <button key={i} onClick={()=>{setActivePage('home');setSearchQuery(c.city);}} className="btn"
-                    style={{display:'flex',alignItems:'center',gap:6,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'6px 12px',color:S.text,fontSize:12}}>
-                    <div style={{width:8,height:8,borderRadius:'50%',background:c.color}}/>
-                    {c.city} · {c.count} объект{c.count>1?'а':''}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
             {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта']].map(([page,label])=>(
@@ -363,7 +279,7 @@ function App() {
         </div>
       </header>
 
-      {/* Chat Widget */}
+      {/* Chat */}
       <div style={{position:'fixed',bottom:isMobile?80:24,right:isMobile?12:24,zIndex:300}}>
         {chatOpen&&(
           <div style={{position:'absolute',bottom:60,right:0,width:isMobile?'calc(100vw - 24px)':'340px',maxHeight:480,background:S.bg2,border:`1px solid ${S.border}`,borderRadius:16,overflow:'hidden',boxShadow:'0 20px 60px rgba(0,0,0,0.5)',animation:'slideIn 0.3s ease',display:'flex',flexDirection:'column'}}>
@@ -373,14 +289,13 @@ function App() {
                 <div>
                   <div style={{fontSize:13,fontWeight:600}}>SolBrick AI Assistant</div>
                   <div style={{fontSize:11,color:S.green,display:'flex',alignItems:'center',gap:4}}>
-                    <div style={{width:5,height:5,background:S.green,borderRadius:'50%',animation:'pulse 2s infinite'}}/>
-                    Claude AI · Онлайн
+                    <div style={{width:5,height:5,background:S.green,borderRadius:'50%',animation:'pulse 2s infinite'}}/>Claude AI · Онлайн
                   </div>
                 </div>
               </div>
               <button onClick={()=>setChatOpen(false)} style={{background:'transparent',border:'none',color:S.text2,cursor:'pointer',fontSize:16,padding:4}}>✕</button>
             </div>
-            <div style={{flex:1,overflowY:'auto',padding:'12px',display:'flex',flexDirection:'column',gap:10,maxHeight:320}}>
+            <div style={{flex:1,overflowY:'auto',padding:'12px',display:'flex',flexDirection:'column',gap:10,maxHeight:300}}>
               {chatMessages.map(msg=>(
                 <div key={msg.id} style={{display:'flex',flexDirection:msg.from==='user'?'row-reverse':'row',gap:8,animation:'msgIn 0.3s ease'}}>
                   {msg.from==='bot'&&<div style={{width:28,height:28,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,flexShrink:0}}>🤖</div>}
@@ -393,7 +308,7 @@ function App() {
                 </div>
               ))}
               {chatTyping&&(
-                <div style={{display:'flex',gap:8,animation:'msgIn 0.3s ease'}}>
+                <div style={{display:'flex',gap:8}}>
                   <div style={{width:28,height:28,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14}}>🤖</div>
                   <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:'4px 12px 12px 12px',padding:'10px 16px',display:'flex',gap:4,alignItems:'center'}}>
                     {[0,1,2].map(i=><div key={i} style={{width:6,height:6,background:S.text3,borderRadius:'50%',animation:`pulse 1s ease-in-out ${i*0.2}s infinite`}}/>)}
@@ -417,9 +332,7 @@ function App() {
                 onKeyPress={e=>e.key==='Enter'&&sendChat()}
                 style={{flex:1,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'8px 12px',color:S.text,fontSize:13}}/>
               <button onClick={sendChat} className="btn"
-                style={{background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'8px 14px',borderRadius:8,fontSize:16,fontWeight:700}}>
-                ➤
-              </button>
+                style={{background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'8px 14px',borderRadius:8,fontSize:16,fontWeight:700}}>➤</button>
             </div>
           </div>
         )}
@@ -427,9 +340,7 @@ function App() {
           style={{width:52,height:52,background:`linear-gradient(135deg,${S.green},#0099CC)`,border:'none',borderRadius:'50%',cursor:'pointer',fontSize:24,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:`0 4px 20px ${S.green}50`,position:'relative',animation:'bounce 3s ease-in-out infinite'}}>
           {chatOpen?'✕':'💬'}
           {unreadChat>0&&!chatOpen&&(
-            <div style={{position:'absolute',top:-2,right:-2,width:18,height:18,background:S.red,borderRadius:'50%',fontSize:10,fontWeight:700,color:'white',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              {unreadChat}
-            </div>
+            <div style={{position:'absolute',top:-2,right:-2,width:18,height:18,background:S.red,borderRadius:'50%',fontSize:10,fontWeight:700,color:'white',display:'flex',alignItems:'center',justifyContent:'center'}}>{unreadChat}</div>
           )}
         </button>
       </div>
@@ -627,13 +538,7 @@ function App() {
                             <div style={{fontSize:9,color:S.text3,textTransform:'uppercase',letterSpacing:0.5}}>Цена доли</div>
                             <div style={{fontSize:16,fontWeight:700,fontFamily:'monospace'}}>${asset.pricePerShare}</div>
                           </div>
-                          <div style={{display:'flex',alignItems:'flex-end',gap:2,height:24}}>
-                          {(asset as any).priceHistory?.map((p:number,i:number,arr:number[])=>{
-                            const min=Math.min(...arr),max=Math.max(...arr);
-                            const h=Math.round(((p-min)/(max-min))*20)+4;
-                            return <div key={i} style={{width:4,height:h,background:i===arr.length-1?asset.color:asset.color+'60',borderRadius:1}}/>;
-                          })}
-                        </div>
+                          <span style={{color:asset.color,fontSize:11}}>▼ подробнее</span>
                         </div>
                       ):<div style={{textAlign:'center',color:S.text3,fontSize:11,marginTop:6}}>▲ свернуть</div>}
                     </div>
@@ -708,11 +613,7 @@ function App() {
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Рассчитайте потенциальный доход</p>
             <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:16}}>
               <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,padding:20}}>
-                {[
-                  {label:'Сумма инвестиции',value:calcAmount,min:20,max:100000,step:20,setter:setCalcAmount,fmt:(v:number)=>`$${v.toLocaleString()}`},
-                  {label:'Срок (лет)',value:calcYears,min:1,max:10,step:1,setter:setCalcYears,fmt:(v:number)=>`${v} лет`},
-                  {label:'Ожидаемый ROI',value:calcRoi,min:5,max:30,step:0.5,setter:setCalcRoi,fmt:(v:number)=>`${v}%`},
-                ].map(p=>(
+                {[{label:'Сумма инвестиции',value:calcAmount,min:20,max:100000,step:20,setter:setCalcAmount,fmt:(v:number)=>`$${v.toLocaleString()}`},{label:'Срок (лет)',value:calcYears,min:1,max:10,step:1,setter:setCalcYears,fmt:(v:number)=>`${v} лет`},{label:'Ожидаемый ROI',value:calcRoi,min:5,max:30,step:0.5,setter:setCalcRoi,fmt:(v:number)=>`${v}%`}].map(p=>(
                   <div key={p.label} style={{marginBottom:22}}>
                     <div style={{display:'flex',justifyContent:'space-between',marginBottom:8,fontSize:13}}>
                       <span style={{color:S.text2}}>{p.label}</span>
@@ -781,12 +682,12 @@ function App() {
                         <div style={{fontSize:11,color:S.text2,marginTop:2}}>{tx.amount} долей · {tx.date}</div>
                       </div>
                       <div style={{textAlign:'right'}}>
-                        <div style={{fontSize:14,fontWeight:700,color:S.green,fontFamily:'monospace'}}>${tx.cost}</div>
+                        <div style={{fontSize:14,fontWeight:700,color:S.green,fontFamily:'monospace'}}>{tx.cost>0?`$${tx.cost}`:'—'}</div>
                         <div style={{fontSize:10,color:S.blue,fontFamily:'monospace',marginTop:2}}>{tx.hash}...</div>
                       </div>
                     </div>
-                    <div style={{display:'inline-flex',alignItems:'center',gap:4,background:'#0d2d1e',border:`1px solid ${S.green}30`,color:S.green,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>
-                      ✅ BUY · Confirmed on Solana
+                    <div style={{display:'inline-flex',alignItems:'center',gap:4,background: tx.onchain?'#0d1f3d':'#0d2d1e',border:`1px solid ${tx.onchain?S.blue+'40':S.green+'30'}`,color:tx.onchain?S.blue:S.green,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>
+                      {tx.onchain?'⛓ ON-CHAIN · Solana Devnet':'✅ BUY · Confirmed on Solana'}
                     </div>
                   </div>
                 ))}
@@ -795,49 +696,59 @@ function App() {
           </div>
         )}
 
-
+        {/* MAP */}
         {activePage==='map'&&(
           <div style={{animation:'fadeUp 0.3s ease'}}>
             <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Карта проектов</h2>
             <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Все объекты SolBrick на карте Казахстана</p>
-            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden',position:'relative'}}>
-              <svg viewBox="0 0 800 400" style={{width:'100%',display:'block',background:'#1a2535'}}>
-                <path d="M 148 62 L 162 58 L 178 55 L 195 54 L 210 52 L 225 50 L 238 52 L 248 56 L 255 52 L 262 48 L 272 46 L 285 48 L 295 52 L 308 50 L 318 46 L 330 44 L 342 46 L 352 50 L 362 48 L 372 45 L 382 44 L 392 46 L 402 50 L 415 52 L 428 54 L 440 52 L 450 48 L 462 46 L 475 48 L 488 54 L 500 60 L 512 68 L 522 78 L 530 90 L 535 102 L 538 115 L 535 128 L 528 138 L 518 145 L 505 150 L 492 153 L 478 155 L 465 158 L 452 162 L 440 168 L 428 175 L 418 183 L 410 192 L 405 202 L 402 213 L 400 225 L 398 235 L 392 242 L 382 246 L 370 248 L 355 248 L 340 245 L 325 240 L 310 235 L 295 232 L 280 232 L 268 236 L 258 242 L 248 248 L 238 252 L 225 254 L 212 252 L 200 248 L 188 242 L 178 235 L 168 228 L 158 222 L 145 218 L 130 216 L 115 218 L 102 222 L 90 228 L 78 232 L 65 232 L 52 228 L 42 220 L 35 210 L 30 198 L 28 185 L 30 172 L 35 160 L 42 150 L 50 142 L 42 138 L 35 132 L 30 122 L 28 110 L 32 98 L 40 88 L 50 80 L 62 74 L 75 70 L 90 66 L 105 63 L 120 61 L 135 61 Z" fill="#1e3a5f" stroke="#3a6fa8" strokeWidth="1.5"/>
-<path d="M 38 190 L 42 172 L 50 155 L 55 140 L 75 125 L 55 130 L 35 145 L 20 165 L 15 188 L 18 210 L 28 228 L 40 240 L 48 225 Z" fill="#1a3050" stroke="#2a4f7a" strokeWidth="1"/>
-                <text x="400" y="30" fill="#9aa0a6" fontSize="14" textAnchor="middle" fontFamily="Segoe UI">Казахстан</text>
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden'}}>
+              <svg viewBox="0 0 700 380" style={{width:'100%',display:'block',background:'#0d1829'}}>
+                <defs>
+                  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#00C896" stopOpacity="0.3"/>
+                    <stop offset="100%" stopColor="#00C896" stopOpacity="0"/>
+                  </radialGradient>
+                </defs>
+                {/* Kazakhstan border */}
+                <path d="M 120 80 L 145 65 L 168 58 L 192 54 L 215 52 L 235 54 L 248 50 L 262 45 L 278 44 L 292 48 L 305 46 L 318 42 L 332 44 L 345 48 L 358 45 L 372 42 L 386 44 L 398 48 L 412 50 L 426 48 L 438 44 L 452 42 L 466 46 L 480 52 L 494 60 L 506 70 L 516 82 L 522 96 L 525 110 L 522 124 L 515 135 L 504 143 L 490 148 L 475 152 L 460 156 L 445 162 L 430 170 L 418 180 L 408 192 L 402 205 L 398 218 L 394 230 L 386 238 L 374 242 L 360 244 L 344 242 L 328 238 L 312 232 L 296 228 L 280 228 L 266 232 L 254 240 L 242 248 L 228 252 L 214 250 L 200 244 L 186 236 L 174 228 L 162 220 L 148 214 L 132 212 L 116 214 L 100 220 L 86 228 L 72 232 L 58 230 L 46 222 L 36 212 L 28 200 L 24 186 L 26 172 L 32 158 L 40 146 L 50 136 L 42 128 L 36 118 L 32 106 L 34 94 L 42 84 L 54 76 L 68 70 L 84 66 L 100 64 L 112 66 Z" fill="#1a3050" stroke="#2a5f8a" strokeWidth="1.5" opacity="0.9"/>
+                {/* Caspian Sea */}
+                <ellipse cx="28" cy="175" rx="18" ry="35" fill="#0d2040" stroke="#1a4060" strokeWidth="1" opacity="0.8"/>
+                <text x="28" y="178" fill="#4A9EFF" fontSize="7" textAnchor="middle" fontFamily="Segoe UI">Каспий</text>
+                {/* Cities */}
                 {[
-                  {x:265,y:222,name:"Шымкент",projects:["ЖК Алтын Орда","Сайрам ТЦ"],color:"#00C896"},
-                  {x:345,y:118,name:"Астана",projects:["Астана Парк","MedCity"],color:"#A78BFA"},
-                  {x:415,y:205,name:"Алматы",projects:["Нур Плаза","KazHub"],color:"#FF6B35"},
-                  {x:228,y:210,name:"Туркестан",projects:["Silk Road"],color:"#F59E0B"},
-                  {x:52,y:185,name:"Актау",projects:["Caspian View"],color:"#06B6D4"},
-                  {x:478,y:118,name:"Семей",projects:["Семей Хайтс"],color:"#84CC16"},
+                  {x:240,y:232,name:"Шымкент",color:"#00C896",projects:2,hot:false},
+                  {x:338,y:115,name:"Астана",color:"#A78BFA",projects:2,hot:false},
+                  {x:408,y:198,name:"Алматы",color:"#FF6B35",projects:2,hot:true},
+                  {x:200,y:220,name:"Туркестан",color:"#F59E0B",projects:1,hot:true},
+                  {x:46,y:178,name:"Актау",color:"#06B6D4",projects:1,hot:false},
+                  {x:468,y:110,name:"Семей",color:"#84CC16",projects:1,hot:false},
                 ].map((city,i)=>(
-                  <g key={i} style={{cursor:'pointer'}} onClick={()=>{setFilterTag('Все');setActivePage('home');setSearchQuery(city.name);}}>
-                    <circle cx={city.x} cy={city.y} r="14" fill={city.color} opacity="0.2"/>
-                    <circle cx={city.x} cy={city.y} r="8" fill={city.color} opacity="0.8"/>
-                    <circle cx={city.x} cy={city.y} r="4" fill={city.color}/>
-                    <text x={city.x} y={city.y+24} fill="white" fontSize="10" textAnchor="middle" fontFamily="Segoe UI" fontWeight="600">{city.name}</text>
-                    <text x={city.x} y={city.y+36} fill={city.color} fontSize="9" textAnchor="middle" fontFamily="Segoe UI">{city.projects.length} проект{city.projects.length>1?'а':''}</text>
+                  <g key={i} style={{cursor:'pointer'}} onClick={()=>{setActivePage('home');setSearchQuery(city.name);}}>
+                    <circle cx={city.x} cy={city.y} r="20" fill="url(#glow)" opacity="0.5"/>
+                    <circle cx={city.x} cy={city.y} r={city.hot?11:9} fill={city.color} opacity="0.25"/>
+                    <circle cx={city.x} cy={city.y} r={city.hot?7:6} fill={city.color} opacity="0.7"/>
+                    <circle cx={city.x} cy={city.y} r={city.hot?4:3} fill={city.color}/>
+                    {city.hot&&<circle cx={city.x} cy={city.y} r="12" fill="none" stroke={city.color} strokeWidth="1" opacity="0.5" strokeDasharray="3,3"/>}
+                    <text x={city.x} y={city.y+22} fill="white" fontSize="10" textAnchor="middle" fontFamily="Segoe UI" fontWeight="600">{city.name}</text>
+                    <text x={city.x} y={city.y+33} fill={city.color} fontSize="8" textAnchor="middle" fontFamily="Segoe UI">{city.projects} объект{city.projects>1?'а':''}</text>
                   </g>
                 ))}
+                <text x="350" y="25" fill="#5f6368" fontSize="12" textAnchor="middle" fontFamily="Segoe UI">🇰🇿 Казахстан · 9 проектов SolBrick</text>
               </svg>
-              <div style={{padding:'16px',borderTop:`1px solid ${S.border}`,display:'flex',gap:12,flexWrap:'wrap'}}>
-                {[
-                  {city:"Шымкент",count:2,color:"#00C896"},{city:"Астана",count:2,color:"#A78BFA"},
-                  {city:"Алматы",count:2,color:"#FF6B35"},{city:"Туркестан",count:1,color:"#F59E0B"},
-                  {city:"Актау",count:1,color:"#06B6D4"},{city:"Семей",count:1,color:"#84CC16"},
-                ].map((c,i)=>(
+              <div style={{padding:'16px',borderTop:`1px solid ${S.border}`,display:'flex',gap:10,flexWrap:'wrap',alignItems:'center'}}>
+                <span style={{fontSize:12,color:S.text2,marginRight:4}}>Нажми на город:</span>
+                {[{city:"Шымкент",count:2,color:"#00C896"},{city:"Астана",count:2,color:"#A78BFA"},{city:"Алматы",count:2,color:"#FF6B35"},{city:"Туркестан",count:1,color:"#F59E0B"},{city:"Актау",count:1,color:"#06B6D4"},{city:"Семей",count:1,color:"#84CC16"}].map((c,i)=>(
                   <button key={i} onClick={()=>{setActivePage('home');setSearchQuery(c.city);}} className="btn"
                     style={{display:'flex',alignItems:'center',gap:6,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'6px 12px',color:S.text,fontSize:12}}>
                     <div style={{width:8,height:8,borderRadius:'50%',background:c.color}}/>
-                    {c.city} · {c.count} объект{c.count>1?'а':''}
+                    {c.city} · {c.count}
                   </button>
                 ))}
               </div>
             </div>
           </div>
         )}
+
         {!isMobile&&(
           <div style={{marginTop:40,paddingTop:16,borderTop:`1px solid ${S.border2}`,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <span style={{fontSize:11,color:S.text3}}>SolBrick © 2026 · National Solana Hackathon by Decentrathon</span>
@@ -851,8 +762,8 @@ function App() {
         <div style={{position:'fixed',bottom:0,left:0,right:0,zIndex:200,background:S.bg2,borderTop:`1px solid ${S.border}`,display:'flex',justifyContent:'space-around',padding:'8px 0 18px',backdropFilter:'blur(20px)'}}>
           {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['map','🗺','Карта']].map(([page,icon,label])=>(
             <button key={page} onClick={()=>setActivePage(page as Page)}
-              style={{background:'transparent',border:'none',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'4px 10px',color:activePage===page?S.green:S.text2,transition:'all 0.2s'}}>
-              <span style={{fontSize:22,transition:'transform 0.2s',transform:activePage===page?'scale(1.15)':'scale(1)'}}>{icon}</span>
+              style={{background:'transparent',border:'none',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'4px 8px',color:activePage===page?S.green:S.text2,transition:'all 0.2s'}}>
+              <span style={{fontSize:20,transition:'transform 0.2s',transform:activePage===page?'scale(1.15)':'scale(1)'}}>{icon}</span>
               <span style={{fontSize:10,fontWeight:activePage===page?600:400}}>{label}</span>
               {activePage===page&&<div style={{width:4,height:4,background:S.green,borderRadius:'50%',animation:'pulse 2s infinite'}}/>}
             </button>
