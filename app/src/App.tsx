@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from './supabase';
 import './App.css';
 
 const PROJECTS = [
@@ -93,6 +94,7 @@ function App() {
         const pubkey = r.publicKey.toString();
         setWallet(pubkey);
         showMsg('✅ Кошелёк подключён!');
+        supabase.from('visits').insert({wallet: pubkey}).then(() => {});
         try {
           const { Connection, PublicKey, clusterApiUrl } = await import('@solana/web3.js');
           const conn = new Connection(clusterApiUrl('devnet'), 'confirmed');
@@ -130,6 +132,7 @@ function App() {
     setTxPending(false);
     setModal(null);
     showMsg(`✅ Куплено ${m.amount} доля в "${m.project.name}"`);
+    supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
   };
 
   const sendChat = async () => {
