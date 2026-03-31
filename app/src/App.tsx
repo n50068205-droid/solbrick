@@ -183,6 +183,35 @@ function App() {
     {icon:'🔗',title:'Подключи Phantom Wallet',desc:'Все транзакции записываются в Solana блокчейн'},
   ];
 
+  if (!wallet && !showOnboarding) return (
+    <div style={{fontFamily:"'Segoe UI',sans-serif",background:S.bg,minHeight:'100vh',color:S.text,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+      <style>{`@keyframes fi{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes p2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}`}</style>
+      <div style={{maxWidth:420,width:'100%',animation:'fi 0.5s ease',textAlign:'center'}}>
+        <div style={{width:80,height:80,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:22,display:'flex',alignItems:'center',justifyContent:'center',fontSize:40,margin:'0 auto 16px',boxShadow:`0 8px 32px ${S.green}40`,animation:'p2 3s ease-in-out infinite'}}>🏗</div>
+        <div style={{fontSize:28,fontWeight:700,marginBottom:4}}>SolBrick</div>
+        <div style={{fontSize:13,color:S.text3,marginBottom:32,letterSpacing:1}}>TOKENIZED REAL ESTATE ON SOLANA</div>
+        <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:16,padding:28,marginBottom:16}}>
+          <div style={{fontSize:16,fontWeight:600,marginBottom:8}}>Войти через Phantom Wallet</div>
+          <p style={{color:S.text2,fontSize:13,lineHeight:1.7,marginBottom:20}}>Подключите Phantom Wallet чтобы начать инвестировать в недвижимость Казахстана от $20</p>
+          <button onClick={connectWallet}
+            style={{width:'100%',background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'14px',borderRadius:10,cursor:'pointer',fontSize:15,fontWeight:700,boxShadow:`0 4px 20px ${S.green}40`,marginBottom:12}}>
+            🔗 Подключить Phantom Wallet
+          </button>
+          <button onClick={()=>setShowOnboarding(false)}
+            style={{width:'100%',background:'transparent',color:S.text2,border:`1px solid ${S.border}`,padding:'12px',borderRadius:10,cursor:'pointer',fontSize:13}}>
+            Продолжить без кошелька
+          </button>
+        </div>
+        <div style={{display:'flex',justifyContent:'center',gap:20,fontSize:12,color:S.text3}}>
+          <span>✅ Безопасно</span>
+          <span>⚡ Solana Devnet</span>
+          <span>🔒 Без паролей</span>
+        </div>
+        {message&&<div style={{marginTop:16,padding:'10px 20px',background:message.includes('✅')?'#0d2d1e':'#2d1515',border:`1px solid ${message.includes('✅')?S.green+'40':S.red+'40'}`,borderRadius:8,fontSize:13,color:message.includes('✅')?S.green:S.red}}>{message}</div>}
+      </div>
+    </div>
+  );
+
   if (showOnboarding) return (
     <div style={{fontFamily:"'Segoe UI',sans-serif",background:S.bg,minHeight:'100vh',color:S.text,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
       <style>{`@keyframes fi{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes p2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}`}</style>
