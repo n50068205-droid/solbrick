@@ -93,12 +93,23 @@ function App() {
         const pubkey = r.publicKey.toString();
         setWallet(pubkey);
         showMsg('✅ Кошелёк подключён!');
-        // Получаем реальный баланс SOL
         try {
           const { Connection, PublicKey, clusterApiUrl } = await import('@solana/web3.js');
           const conn = new Connection(clusterApiUrl('devnet'), 'confirmed');
           const bal = await conn.getBalance(new PublicKey(pubkey));
           setSolBalance(bal / 1e9);
+          // Получаем реальные транзакции из блокчейна
+          const sigs = await conn.getSignaturesForAddress(new PublicKey(pubkey), {limit: 10});
+          const realTxs = sigs.map((sig, i) => ({
+            id: i,
+            project: 'On-chain транзакция',
+            amount: 1,
+            cost: 0,
+            date: sig.blockTime ? new Date(sig.blockTime * 1000).toLocaleString('ru-RU') : 'Недавно',
+            hash: sig.signature.slice(0, 8).toUpperCase(),
+            onchain: true
+          }));
+          if (realTxs.length > 0) setTransactions(realTxs);
         } catch { setSolBalance(0); }
       } else showMsg('❌ Установите Phantom Wallet!');
     } catch { showMsg('❌ Ошибка подключения'); }
