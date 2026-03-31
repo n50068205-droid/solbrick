@@ -62,9 +62,6 @@ function App() {
   const [chatInput, setChatInput] = useState('');
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
-  const [adminVisits, setAdminVisits] = useState<any[]>([]);
-  const [adminPurchases, setAdminPurchases] = useState<any[]>([]);
-  const ADMIN_WALLET = 'Sq9C'; // первые 4 символа твоего кошелька
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,12 +83,7 @@ function App() {
 
   useEffect(() => { chatEndRef.current?.scrollIntoView({behavior:'smooth'}); }, [chatMessages]);
 
-  const loadAdminData = async () => {
-    const {data: visits} = await supabase.from('visits').select('*').order('created_at', {ascending: false}).limit(50);
-    const {data: purchases} = await supabase.from('purchases').select('*').order('created_at', {ascending: false}).limit(50);
-    if (visits) setAdminVisits(visits);
-    if (purchases) setAdminPurchases(purchases);
-  };
+
   useEffect(() => { if (chatOpen) setUnreadChat(0); }, [chatOpen]);
 
   const showMsg = (msg:string) => { setMessage(msg); setTimeout(()=>setMessage(''),4000); };
