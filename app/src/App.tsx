@@ -22,7 +22,7 @@ const TICKER = [
   {name:"MedCity",price:"$90.00",change:"+9.3%"},
 ];
 
-type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map'|'admin';
+type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map';
 interface ChatMsg { id:number; text:string; from:'user'|'bot'; time:string; }
 
 const S = {
@@ -358,7 +358,7 @@ function App() {
 
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
-            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта'],['admin','⚙️ Админ']].map(([page,label])=>(
+            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта']].map(([page,label])=>(
               <button key={page} onClick={()=>setActivePage(page as Page)}
                 style={{background:'transparent',border:'none',color:activePage===page?S.green:S.text2,padding:'6px 14px',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:activePage===page?600:400,borderBottom:activePage===page?`2px solid ${S.green}`:'2px solid transparent'}}>
                 {label}
