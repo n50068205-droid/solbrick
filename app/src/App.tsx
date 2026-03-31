@@ -299,63 +299,6 @@ function App() {
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
           <span style={{background:S.bg3,color:S.green,fontSize:9,padding:'2px 6px',borderRadius:4,border:`1px solid ${S.green}30`,fontWeight:700,letterSpacing:1,animation:'glow 3s ease-in-out infinite'}}>DEVNET</span>
         </div>
-        {/* ADMIN */}
-        {activePage==='admin'&&(
-          <div style={{animation:'fadeUp 0.3s ease'}}>
-            {wallet && wallet.startsWith(ADMIN_WALLET) ? (
-              <>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-                  <div>
-                    <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>⚙️ Админ панель</h2>
-                    <p style={{color:S.text2,fontSize:13,margin:0}}>Статистика платформы SolBrick</p>
-                  </div>
-                  <button onClick={loadAdminData} className="btn"
-                    style={{background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'8px 16px',borderRadius:8,fontSize:13,fontWeight:700}}>
-                    🔄 Обновить
-                  </button>
-                </div>
-                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:20}}>
-                  {[{l:'Посещений',v:adminVisits.length,c:S.green},{l:'Покупок',v:adminPurchases.length,c:S.blue},{l:'Выручка',v:`$${adminPurchases.reduce((s,p)=>s+p.cost,0)}`,c:'#F59E0B'}].map((s,i)=>(
-                    <div key={i} style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:10,padding:'16px 20px'}}>
-                      <div style={{fontSize:11,color:S.text3,textTransform:'uppercase',letterSpacing:0.5,marginBottom:4}}>{s.l}</div>
-                      <div style={{fontSize:24,fontWeight:700,color:s.c,fontFamily:'monospace'}}>{s.v}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-                  <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden'}}>
-                    <div style={{padding:'12px 16px',borderBottom:`1px solid ${S.border}`,fontSize:13,fontWeight:600,color:S.green}}>👥 Последние посещения</div>
-                    {adminVisits.length===0 ? (
-                      <div style={{padding:20,textAlign:'center',color:S.text2,fontSize:13}}>Нажмите "Обновить"</div>
-                    ) : adminVisits.slice(0,10).map((v,i)=>(
-                      <div key={i} style={{padding:'10px 16px',borderTop:i>0?`1px solid ${S.border2}`:'none',fontSize:12}}>
-                        <div style={{color:S.text,fontFamily:'monospace'}}>{v.wallet?.slice(0,8)}...{v.wallet?.slice(-6)}</div>
-                        <div style={{color:S.text3,marginTop:2}}>{new Date(v.created_at).toLocaleString('ru-RU')}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,overflow:'hidden'}}>
-                    <div style={{padding:'12px 16px',borderBottom:`1px solid ${S.border}`,fontSize:13,fontWeight:600,color:S.blue}}>💰 Последние покупки</div>
-                    {adminPurchases.length===0 ? (
-                      <div style={{padding:20,textAlign:'center',color:S.text2,fontSize:13}}>Нажмите "Обновить"</div>
-                    ) : adminPurchases.slice(0,10).map((p,i)=>(
-                      <div key={i} style={{padding:'10px 16px',borderTop:i>0?`1px solid ${S.border2}`:'none',fontSize:12}}>
-                        <div style={{color:S.text,fontWeight:500}}>{p.project_name}</div>
-                        <div style={{color:S.text2,marginTop:2}}>{p.wallet?.slice(0,6)}... · ${p.cost} · {new Date(p.created_at).toLocaleString('ru-RU')}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div style={{textAlign:'center',padding:48,background:S.bg2,border:`1px solid ${S.border}`,borderRadius:14}}>
-                <div style={{fontSize:48,marginBottom:12}}>🔒</div>
-                <p style={{color:S.text2,fontSize:14}}>Доступ только для администратора</p>
-              </div>
-            )}
-          </div>
-        )}
-
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
             {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта']].map(([page,label])=>(
