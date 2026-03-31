@@ -197,6 +197,10 @@ function App() {
             style={{width:'100%',background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'14px',borderRadius:10,cursor:'pointer',fontSize:15,fontWeight:700,boxShadow:`0 4px 20px ${S.green}40`,marginBottom:12}}>
             🔗 Подключить Phantom Wallet
           </button>
+          <a href="https://phantom.app" target="_blank" rel="noreferrer"
+            style={{display:'block',width:'100%',background:'#4B44AA',color:'white',border:'none',padding:'13px',borderRadius:10,cursor:'pointer',fontSize:14,fontWeight:600,textAlign:'center',textDecoration:'none',marginBottom:8}}>
+            👻 Скачать Phantom Wallet
+          </a>
           <button onClick={()=>setShowOnboarding(false)}
             style={{width:'100%',background:'transparent',color:S.text2,border:`1px solid ${S.border}`,padding:'12px',borderRadius:10,cursor:'pointer',fontSize:13}}>
             Продолжить без кошелька
