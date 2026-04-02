@@ -46,6 +46,7 @@ function App() {
   const [filterTag, setFilterTag] = useState('Все');
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState<{project:any,amount:number}|null>(null);
+  const [buyAmount, setBuyAmount] = useState(1);
   const [txPending, setTxPending] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [calcAmount, setCalcAmount] = useState(1000);
@@ -117,6 +118,7 @@ function App() {
   const openModal = (project:any, amount:number, e?:any) => {
     if (e) e.stopPropagation();
     if (!wallet) { showMsg('❌ Сначала подключите кошелёк!'); return; }
+    setBuyAmount(amount);
     setModal({project,amount});
   };
 
@@ -125,15 +127,15 @@ function App() {
     const m = modal;
     setTxPending(true);
     await new Promise(r=>setTimeout(r,2000));
-    const cost = m.amount * m.project.pricePerShare;
-    setAssets(prev=>prev.map(a=>a.id===m.project.id?{...a,soldShares:a.soldShares+m.amount}:a));
-    setPortfolio(prev=>({...prev,[m.project.id]:(prev[m.project.id]||0)+m.amount}));
+    const cost = buyAmount * m.project.pricePerShare;
+    setAssets(prev=>prev.map(a=>a.id===m.project.id?{...a,soldShares:a.soldShares+buyAmount}:a));
+    setPortfolio(prev=>({...prev,[m.project.id]:(prev[m.project.id]||0)+buyAmount}));
     setSolBalance(prev=>Math.max(0,prev-0.001));
     setUsdBalance(prev=>Math.max(0,prev-cost));
-    setTransactions(prev=>[{id:Date.now(),project:m.project.name,amount:m.amount,cost,date:new Date().toLocaleString('ru-RU'),hash:'0x'+Math.random().toString(16).slice(2,10).toUpperCase()},...prev]);
+    setTransactions(prev=>[{id:Date.now(),project:m.project.name,amount:buyAmount,cost,date:new Date().toLocaleString('ru-RU'),hash:'0x'+Math.random().toString(16).slice(2,10).toUpperCase()},...prev]);
     setTxPending(false);
     setModal(null);
-    showMsg(`✅ Куплено ${m.amount} доля в "${m.project.name}"`);
+    showMsg(`✅ Куплено ${buyAmount} доля в "${m.project.name}"`);
     supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
   };
 
@@ -431,7 +433,25 @@ function App() {
                 <div style={{fontSize:11,color:S.text2}}>On-chain · Solana Devnet</div>
               </div>
             </div>
-            {[['Проект',modal.project.name],['Количество',`${modal.amount} доля`],['Цена',`$${modal.project.pricePerShare}`],['Итого',`$${modal.amount*modal.project.pricePerShare}`],['Комиссия','~0.001 SOL']].map(([k,v])=>(
+            <div style={{marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${S.border2}`}}>
+              <div style={{fontSize:12,color:S.text2,marginBottom:8}}>Количество долей:</div>
+              <div style={{display:'flex',alignItems:'center',gap:12}}>
+                <button onClick={()=>setBuyAmount(Math.max(1,buyAmount-1))} className="btn"
+                  style={{width:36,height:36,background:S.bg3,border:`1px solid ${S.border}`,color:S.text,borderRadius:8,fontSize:20,display:'flex',alignItems:'center',justifyContent:'center'}}>−</button>
+                <div style={{flex:1,textAlign:'center'}}>
+                  <div style={{fontSize:24,fontWeight:700,color:S.green,fontFamily:'monospace'}}>{buyAmount}</div>
+                  <div style={{fontSize:11,color:S.text3}}>долей</div>
+                </div>
+                <button onClick={()=>setBuyAmount(Math.min(100,buyAmount+1))} className="btn"
+                  style={{width:36,height:36,background:S.bg3,border:`1px solid ${S.border}`,color:S.text,borderRadius:8,fontSize:20,display:'flex',alignItems:'center',justifyContent:'center'}}>+</button>
+              </div>
+              <input type="range" min="1" max="100" value={buyAmount} onChange={e=>setBuyAmount(Number(e.target.value))}
+                style={{width:'100%',marginTop:10}}/>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:10,color:S.text3,marginTop:4}}>
+                <span>1 доля</span><span>100 долей</span>
+              </div>
+            </div>
+            {[['Проект',modal.project.name],['Количество',`${buyAmount} доля`],['Цена',`$${modal.project.pricePerShare}`],['Итого',`$${buyAmount*modal.project.pricePerShare}`],['Комиссия','~0.001 SOL']].map(([k,v])=>(
               <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'7px 0',borderBottom:`1px solid ${S.border2}`,fontSize:13}}>
                 <span style={{color:S.text2}}>{k}</span>
                 <span style={{color:k==='Итого'?S.green:S.text,fontWeight:k==='Итого'?700:400}}>{v}</span>
@@ -442,7 +462,7 @@ function App() {
             </div>
             <button onClick={confirmBuy} disabled={txPending} className="btn"
               style={{width:'100%',background:txPending?S.border:`linear-gradient(135deg,${S.green},#0099CC)`,color:txPending?S.text2:S.bg3,border:'none',padding:'12px',borderRadius:8,fontSize:14,fontWeight:700,marginBottom:8,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
-              {txPending?<><div style={{width:14,height:14,border:`2px solid ${S.text2}`,borderTopColor:S.text,borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>Обработка...</>:`✅ Подтвердить · $${modal.amount*modal.project.pricePerShare}`}
+              {txPending?<><div style={{width:14,height:14,border:`2px solid ${S.text2}`,borderTopColor:S.text,borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>Обработка...</>:`✅ Подтвердить · $${buyAmount*modal.project.pricePerShare}`}
             </button>
             {!txPending&&<button onClick={()=>setModal(null)} style={{width:'100%',background:'transparent',color:S.text2,border:`1px solid ${S.border}`,padding:'10px',borderRadius:8,cursor:'pointer',fontSize:13}}>Отмена</button>}
           </div>
