@@ -187,7 +187,7 @@ function App() {
     {icon:'🔗',title:'Подключи Phantom Wallet',desc:'Все транзакции записываются в Solana блокчейн'},
   ];
 
-  if (!wallet && !showOnboarding) return (
+  if (!wallet && !showOnboarding && wallet !== 'guest') return (
     <div style={{fontFamily:"'Segoe UI',sans-serif",background:S.bg,minHeight:'100vh',color:S.text,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
       <style>{`@keyframes fi{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes p2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}`}</style>
       <div style={{maxWidth:420,width:'100%',animation:'fi 0.5s ease',textAlign:'center'}}>
@@ -205,9 +205,9 @@ function App() {
             style={{display:'block',width:'100%',background:'#4B44AA',color:'white',border:'none',padding:'13px',borderRadius:10,cursor:'pointer',fontSize:14,fontWeight:600,textAlign:'center',textDecoration:'none',marginBottom:8}}>
             👻 Скачать Phantom Wallet
           </a>
-          <button onClick={()=>setShowOnboarding(false)}
+          <button onClick={()=>{setShowOnboarding(false);setWallet('guest');}}
             style={{width:'100%',background:'transparent',color:S.text2,border:`1px solid ${S.border}`,padding:'12px',borderRadius:10,cursor:'pointer',fontSize:13}}>
-            Продолжить без кошелька
+            Продолжить без кошелька 👀
           </button>
         </div>
         <div style={{display:'flex',justifyContent:'center',gap:20,fontSize:12,color:S.text3}}>
