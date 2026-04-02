@@ -225,9 +225,9 @@ function App() {
       <style>{`@keyframes fi{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes p2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}`}</style>
       <div style={{maxWidth:400,width:'100%',animation:'fi 0.5s ease'}}>
         <div style={{textAlign:'center',marginBottom:32}}>
-          <div style={{width:72,height:72,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:20,display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,margin:'0 auto 12px',boxShadow:`0 8px 32px ${S.green}40`,animation:'p2 3s ease-in-out infinite'}}>🏗</div>
-          <div style={{fontSize:22,fontWeight:700}}>SolBrick</div>
-          <div style={{fontSize:11,color:S.text3,marginTop:4,letterSpacing:1}}>POWERED BY SOLANA</div>
+          <div style={{width:80,height:80,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:24,display:'flex',alignItems:'center',justifyContent:'center',fontSize:40,margin:'0 auto 16px',boxShadow:`0 12px 40px ${S.green}50`,animation:'p2 3s ease-in-out infinite'}}>🏗️</div>
+          <div style={{fontSize:26,fontWeight:800,letterSpacing:-0.5}}>SolBrick</div>
+          <div style={{fontSize:11,color:S.green,marginTop:4,letterSpacing:2,fontWeight:600}}>POWERED BY SOLANA</div>
         </div>
         <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:16,padding:28,textAlign:'center',marginBottom:16}}>
           <div style={{fontSize:52,marginBottom:14}}>{onboardSteps[onboardStep].icon}</div>
@@ -238,7 +238,7 @@ function App() {
           {onboardSteps.map((_,i)=><div key={i} style={{width:i===onboardStep?24:6,height:6,background:i===onboardStep?S.green:S.border,borderRadius:3,transition:'all 0.4s'}}/>)}
         </div>
         <button onClick={()=>onboardStep<onboardSteps.length-1?setOnboardStep(s=>s+1):setShowOnboarding(false)}
-          style={{width:'100%',background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'14px',borderRadius:10,cursor:'pointer',fontSize:15,fontWeight:700,marginBottom:8,boxShadow:`0 4px 20px ${S.green}40`}}>
+          style={{width:'100%',background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'16px',borderRadius:12,cursor:'pointer',fontSize:15,fontWeight:800,marginBottom:8,boxShadow:`0 6px 24px ${S.green}50`,letterSpacing:0.3}}>
           {onboardStep<onboardSteps.length-1?'Далее →':'🚀 Начать инвестировать'}
         </button>
         <button onClick={()=>setShowOnboarding(false)} style={{width:'100%',background:'transparent',color:S.text3,border:'none',padding:'10px',cursor:'pointer',fontSize:13}}>Пропустить</button>
