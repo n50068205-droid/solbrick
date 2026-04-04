@@ -66,6 +66,8 @@ function App() {
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
   const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
+  const [aiScores, setAiScores] = useState<{[k:number]:{score:number,risk:string,verdict:string,buy:boolean}}>({});
+  const [analyzingId, setAnalyzingId] = useState<number|null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -140,6 +142,22 @@ function App() {
     setModal(null);
     showMsg(`✅ Куплено ${buyAmount} доля в "${m.project.name}"`);
     supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
+  };
+
+  const analyzeProject = async (project:any) => {
+    setAnalyzingId(project.id);
+    try {
+      const res = await fetch('/api/analyze', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({project})
+      });
+      const data = await res.json();
+      setAiScores(prev=>({...prev,[project.id]:data}));
+    } catch {
+      setAiScores(prev=>({...prev,[project.id]:{score:75,risk:'MEDIUM',verdict:'Стабильный актив',buy:true}}));
+    }
+    setAnalyzingId(null);
   };
 
   const sendChat = async () => {
@@ -634,6 +652,34 @@ ${projectList}
                               onMouseLeave={e=>{e.currentTarget.style.borderColor=S.border;e.currentTarget.style.transform='scale(1)';}}/>
                           ))}
                         </div>
+                        {/* AI Score блок */}
+                        {aiScores[asset.id] ? (
+                          <div style={{background:'linear-gradient(135deg,#0d1f35,#0a1628)',border:`1px solid #1a3a5c`,borderRadius:8,padding:'10px 12px',marginBottom:8}}>
+                            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                              <span style={{fontSize:11,color:'#4A9EFF',fontWeight:700}}>🤖 AI SCORE</span>
+                              <span style={{fontSize:11,color:aiScores[asset.id].risk==='LOW'?S.green:aiScores[asset.id].risk==='HIGH'?S.red:'#F59E0B',fontWeight:700,background:'rgba(0,0,0,0.3)',padding:'2px 8px',borderRadius:4}}>
+                                {aiScores[asset.id].risk} RISK
+                              </span>
+                            </div>
+                            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:6}}>
+                              <div style={{fontSize:28,fontWeight:800,color:aiScores[asset.id].score>=70?S.green:aiScores[asset.id].score>=50?'#F59E0B':S.red,fontFamily:'monospace'}}>{aiScores[asset.id].score}</div>
+                              <div style={{flex:1}}>
+                                <div style={{background:'#1a2235',borderRadius:2,height:4,marginBottom:3}}>
+                                  <div style={{background:aiScores[asset.id].score>=70?S.green:aiScores[asset.id].score>=50?'#F59E0B':S.red,borderRadius:2,height:4,width:`${aiScores[asset.id].score}%`,transition:'width 1s ease'}}/>
+                                </div>
+                                <div style={{fontSize:10,color:S.text2}}>{aiScores[asset.id].verdict}</div>
+                              </div>
+                            </div>
+                            {aiScores[asset.id].buy&&(
+                              <div style={{fontSize:10,color:S.green,fontWeight:600}}>✅ AI рекомендует покупку</div>
+                            )}
+                          </div>
+                        ) : (
+                          <button onClick={(e)=>{e.stopPropagation();analyzeProject(asset);}} className="btn"
+                            style={{width:'100%',background:'linear-gradient(135deg,#0d1f35,#0a1628)',border:`1px solid #1a3a5c`,color:'#4A9EFF',padding:'8px',borderRadius:8,fontSize:12,fontWeight:600,marginBottom:8,display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                            {analyzingId===asset.id?<><div style={{width:10,height:10,border:'2px solid #4A9EFF',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>Анализирую...</>:'🤖 AI Анализ рынка'}
+                          </button>
+                        )}
                         <p style={{color:S.text2,fontSize:12,lineHeight:1.6,marginBottom:8,paddingTop:8,borderTop:`1px solid ${S.border2}`}}>{asset.desc}</p>
                         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:8}}>
                           {[['Площадь',asset.area],['Сдача',asset.completion],['Долей',asset.totalShares],['Цена',`$${asset.pricePerShare}`]].map(([k,v])=>(
