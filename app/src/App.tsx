@@ -276,7 +276,7 @@ function App() {
       `}</style>
 
       {/* Ticker */}
-      <div style={{background:S.bg3,borderBottom:`1px solid ${S.border}`,height:28,overflow:'hidden'}}>
+      <div style={{background:'#050810',borderBottom:`1px solid #0d1525`,height:26,overflow:'hidden'}}>
         <div style={{display:'flex',animation:'ticker 50s linear infinite',width:'max-content',height:'100%',alignItems:'center'}}>
           {[...TICKER,...TICKER].map((item,i)=>(
             <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'0 16px',whiteSpace:'nowrap',borderRight:`1px solid ${S.border2}`}}>
@@ -289,7 +289,7 @@ function App() {
       </div>
 
       {/* Header */}
-      <header style={{background:S.bg2,borderBottom:`1px solid ${S.border}`,padding:`0 ${isMobile?'12px':'32px'}`,display:'flex',alignItems:'center',justifyContent:'space-between',height:52,position:'sticky',top:0,zIndex:100,backdropFilter:'blur(20px)'}}>
+      <header style={{background:'rgba(10,14,23,0.95)',borderBottom:`1px solid ${S.border}`,padding:`0 ${isMobile?'12px':'32px'}`,display:'flex',alignItems:'center',justifyContent:'space-between',height:48,position:'sticky',top:0,zIndex:100,backdropFilter:'blur(20px)',boxShadow:'0 1px 0 rgba(255,255,255,0.04)'}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:32,height:32,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,boxShadow:`0 0 12px ${S.green}40`}}>🏗</div>
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
@@ -483,22 +483,22 @@ function App() {
         {/* HOME */}
         {activePage==='home'&&(
           <div style={{animation:'fadeUp 0.4s ease'}}>
-            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:14,padding:isMobile?'16px':'20px 28px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{background:'linear-gradient(135deg, #0f1a2e 0%, #0a1628 50%, #0d1f35 100%)',border:`1px solid #1a2d4a`,borderRadius:12,padding:isMobile?'16px':'24px 32px',marginBottom:16,position:'relative',overflow:'hidden'}}>
               <div style={{position:'absolute',top:-40,right:-40,width:200,height:200,background:`radial-gradient(circle,${S.green}15,transparent)`,borderRadius:'50%',pointerEvents:'none'}}/>
               <div style={{fontSize:11,color:S.green,fontWeight:600,letterSpacing:1,textTransform:'uppercase',marginBottom:6}}>🚀 Solana Devnet · Anchor Protocol</div>
-              <h1 style={{fontSize:isMobile?20:26,fontWeight:700,margin:'0 0 6px',background:`linear-gradient(135deg,${S.text},${S.green})`,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
-                Инвестируй в недвижимость от $20
+              <h1 style={{fontSize:isMobile?22:32,fontWeight:800,margin:'0 0 8px',color:S.text,letterSpacing:-0.5}}>
+                Инвестируй в недвижимость <span style={{color:S.green}}>от $20</span>
               </h1>
               <p style={{color:S.text2,fontSize:13,margin:'0 0 16px'}}>Токенизированные проекты Казахстана на блокчейне</p>
               <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:isMobile?0:16}}>
                 {[{l:'Проектов',v:counter.projects,c:S.green,i:'🏗'},{l:'Объём',v:`$${counter.volume}K`,c:S.blue,i:'💰'},{l:'Инвесторов',v:`${counter.investors.toLocaleString()}+`,c:'#A78BFA',i:'👥'},{l:'Avg ROI',v:`${counter.roi}%`,c:'#F59E0B',i:'📈'}].map((s,i)=>(
-                  <div key={i} style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:10,padding:'12px 14px',display:'flex',alignItems:'center',gap:10,transition:'all 0.2s'}}
-                    onMouseEnter={e=>e.currentTarget.style.borderColor=s.c}
-                    onMouseLeave={e=>e.currentTarget.style.borderColor=S.border}>
+                  <div key={i} style={{background:'rgba(255,255,255,0.02)',border:`1px solid #1a2235`,borderRadius:8,padding:'14px 16px',display:'flex',alignItems:'center',gap:10,transition:'all 0.2s',backdropFilter:'blur(10px)'}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=s.c;e.currentTarget.style.background='rgba(255,255,255,0.04)';}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor='#1a2235';e.currentTarget.style.background='rgba(255,255,255,0.02)';}}>
                     <span style={{fontSize:22}}>{s.i}</span>
                     <div>
-                      <div style={{fontSize:18,fontWeight:700,color:s.c,fontFamily:'monospace'}}>{s.v}</div>
-                      <div style={{fontSize:10,color:S.text3,textTransform:'uppercase',letterSpacing:0.5}}>{s.l}</div>
+                      <div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:'monospace',letterSpacing:-0.5}}>{s.v}</div>
+                      <div style={{fontSize:10,color:S.text3,textTransform:'uppercase',letterSpacing:1,marginTop:2}}>{s.l}</div>
                     </div>
                   </div>
                 ))}
