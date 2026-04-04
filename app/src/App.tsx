@@ -65,6 +65,8 @@ function App() {
   const [chatInput, setChatInput] = useState('');
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
+  const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
+  const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -150,19 +152,42 @@ function App() {
     setChatInput('');
     setChatTyping(true);
     let response = '';
+    let recommendedProject = null;
     try {
+      const projectList = assets.map(a=>`${a.name} (${a.location}, $${a.pricePerShare}/доля, ROI ${a.roi}, ${Math.round(a.soldShares/a.totalShares*100)}% продано)`).join('\n');
       const res = await fetch('/api/chat', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
           model:'claude-sonnet-4-20250514',
-          max_tokens:600,
-          system:`Ты AI ассистент платформы SolBrick — токенизация недвижимости Казахстана на Solana блокчейне. Отвечай кратко (3-5 предложений), используй эмодзи, отвечай на языке пользователя. 9 проектов от $20 до $100. ROI от 9.8% до 22.5%. Технологии: Solana + Anchor Framework. Минимум $20. Phantom Wallet.`,
+          max_tokens:800,
+          system:`Ты AI инвестиционный агент платформы SolBrick — токенизация недвижимости Казахстана на Solana блокчейне.
+Доступные проекты:
+${projectList}
+
+ВАЖНО: Если пользователь спрашивает про инвестиции, куда вложить, рекомендацию — обязательно порекомендуй ОДИН конкретный проект.
+В конце ответа добавь строку: RECOMMEND:название_проекта
+Например: RECOMMEND:Бизнес-центр Нур Плаза
+
+Отвечай кратко (3-5 предложений), используй эмодзи, отвечай на языке пользователя.`,
           messages:[{role:'user',content:userInput}]
         })
       });
       const data = await res.json();
-      if (data.content?.[0]?.text) response = data.content[0].text;
+      if (data.content?.[0]?.text) {
+        const fullText = data.content[0].text;
+        const recommendMatch = fullText.match(/RECOMMEND:(.+)/);
+        if (recommendMatch) {
+          const projectName = recommendMatch[1].trim();
+          recommendedProject = assets.find(a => a.name.includes(projectName.split(' ')[0])) || null;
+          response = fullText.replace(/RECOMMEND:.+/, '').trim();
+          if (recommendedProject) {
+            setAiRecommendation({project: recommendedProject, reason: response});
+          }
+        } else {
+          response = fullText;
+        }
+      }
     } catch {}
     if (!response) {
       await new Promise(r=>setTimeout(r,600));
@@ -355,6 +380,38 @@ function App() {
                   <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:'4px 12px 12px 12px',padding:'10px 16px',display:'flex',gap:4,alignItems:'center'}}>
                     {[0,1,2].map(i=><div key={i} style={{width:6,height:6,background:S.text3,borderRadius:'50%',animation:`pulse 1s ease-in-out ${i*0.2}s infinite`}}/>)}
                   </div>
+                </div>
+              )}
+              {aiRecommendation&&(
+                <div style={{background:'linear-gradient(135deg,#0d2d1e,#0a1f15)',border:`1px solid #00C89640`,borderRadius:12,padding:12,animation:'msgIn 0.3s ease'}}>
+                  <div style={{fontSize:11,color:'#00C896',fontWeight:700,marginBottom:8}}>🤖 AI РЕКОМЕНДАЦИЯ</div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                    <img src={aiRecommendation.project.photos[0]} alt="" style={{width:48,height:36,borderRadius:6,objectFit:'cover'}}/>
+                    <div>
+                      <div style={{fontSize:12,fontWeight:600}}>{aiRecommendation.project.name}</div>
+                      <div style={{fontSize:11,color:'#00C896'}}>ROI {aiRecommendation.project.roi} · ${aiRecommendation.project.pricePerShare}/доля</div>
+                    </div>
+                  </div>
+                  <button onClick={()=>{setAiRecommendation(null);openModal(aiRecommendation.project,1);setChatOpen(false);}}
+                    style={{width:'100%',background:'linear-gradient(135deg,#00C896,#0099CC)',color:'#0d1117',border:'none',padding:'8px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
+                    ⚡ Купить по рекомендации AI → on-chain
+                  </button>
+                </div>
+              )}
+              {aiRecommendation&&(
+                <div style={{background:'linear-gradient(135deg,#0d2d1e,#0a1f15)',border:`1px solid #00C89640`,borderRadius:12,padding:12,animation:'msgIn 0.3s ease'}}>
+                  <div style={{fontSize:11,color:'#00C896',fontWeight:700,marginBottom:8}}>🤖 AI РЕКОМЕНДАЦИЯ</div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                    <img src={aiRecommendation.project.photos[0]} alt="" style={{width:48,height:36,borderRadius:6,objectFit:'cover'}}/>
+                    <div>
+                      <div style={{fontSize:12,fontWeight:600}}>{aiRecommendation.project.name}</div>
+                      <div style={{fontSize:11,color:'#00C896'}}>ROI {aiRecommendation.project.roi} · ${aiRecommendation.project.pricePerShare}/доля</div>
+                    </div>
+                  </div>
+                  <button onClick={()=>{setAiRecommendation(null);openModal(aiRecommendation.project,1);setChatOpen(false);}}
+                    style={{width:'100%',background:'linear-gradient(135deg,#00C896,#0099CC)',color:'#0d1117',border:'none',padding:'8px',borderRadius:8,fontSize:12,fontWeight:700,cursor:'pointer'}}>
+                    ⚡ Купить по рекомендации AI → on-chain
+                  </button>
                 </div>
               )}
               <div ref={chatEndRef}/>
