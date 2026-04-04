@@ -65,7 +65,6 @@ function App() {
   const [chatInput, setChatInput] = useState('');
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
-  const [isDark, setIsDark] = useState(true);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -250,7 +249,7 @@ function App() {
   );
 
   return (
-    <div style={{fontFamily:"'Segoe UI',sans-serif",background:isDark?S.bg:'#f0f4f8',minHeight:'100vh',color:isDark?S.text:'#1a202c',width:'100%',overflowX:'hidden'}}>
+    <div style={{fontFamily:"'Segoe UI',sans-serif",background:S.bg,minHeight:'100vh',color:S.text,width:'100%',overflowX:'hidden'}}>
       <style>{`
         *{box-sizing:border-box;}
         @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -277,7 +276,7 @@ function App() {
       `}</style>
 
       {/* Ticker */}
-      <div style={{background:'#050810',borderBottom:`1px solid #0d1525`,height:26,overflow:'hidden'}}>
+      <div style={{background:S.bg3,borderBottom:`1px solid ${S.border}`,height:28,overflow:'hidden'}}>
         <div style={{display:'flex',animation:'ticker 50s linear infinite',width:'max-content',height:'100%',alignItems:'center'}}>
           {[...TICKER,...TICKER].map((item,i)=>(
             <div key={i} style={{display:'flex',alignItems:'center',gap:6,padding:'0 16px',whiteSpace:'nowrap',borderRight:`1px solid ${S.border2}`}}>
@@ -290,7 +289,7 @@ function App() {
       </div>
 
       {/* Header */}
-      <header style={{background:'rgba(10,14,23,0.95)',borderBottom:`1px solid ${S.border}`,padding:`0 ${isMobile?'12px':'32px'}`,display:'flex',alignItems:'center',justifyContent:'space-between',height:48,position:'sticky',top:0,zIndex:100,backdropFilter:'blur(20px)',boxShadow:'0 1px 0 rgba(255,255,255,0.04)'}}>
+      <header style={{background:S.bg2,borderBottom:`1px solid ${S.border}`,padding:`0 ${isMobile?'12px':'32px'}`,display:'flex',alignItems:'center',justifyContent:'space-between',height:52,position:'sticky',top:0,zIndex:100,backdropFilter:'blur(20px)'}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:32,height:32,background:`linear-gradient(135deg,${S.green},#0099CC)`,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,boxShadow:`0 0 12px ${S.green}40`}}>🏗</div>
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
@@ -307,11 +306,6 @@ function App() {
           </nav>
         )}
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <button onClick={()=>setIsDark(!isDark)} className="btn"
-            style={{background:'transparent',border:`1px solid ${S.border}`,color:S.text2,padding:'5px 10px',borderRadius:8,fontSize:14,display:'flex',alignItems:'center',gap:4,cursor:'pointer'}}
-            title="Сменить тему">
-            {isDark?'☀️':'🌙'}
-          </button>
           {wallet&&!isMobile&&<div style={{background:S.bg3,border:`1px solid ${S.border}`,padding:'5px 10px',borderRadius:8,fontSize:12,color:S.text2}}>◎ {solBalance.toFixed(3)}</div>}
           {wallet?(
             <div style={{display:'flex',alignItems:'center',gap:5,background:'#0d2d1e',border:`1px solid ${S.green}40`,padding:'5px 10px',borderRadius:8}}>
@@ -489,22 +483,22 @@ function App() {
         {/* HOME */}
         {activePage==='home'&&(
           <div style={{animation:'fadeUp 0.4s ease'}}>
-            <div style={{background:'linear-gradient(135deg, #0f1a2e 0%, #0a1628 50%, #0d1f35 100%)',border:`1px solid #1a2d4a`,borderRadius:12,padding:isMobile?'16px':'24px 32px',marginBottom:16,position:'relative',overflow:'hidden'}}>
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:14,padding:isMobile?'16px':'20px 28px',marginBottom:16,position:'relative',overflow:'hidden'}}>
               <div style={{position:'absolute',top:-40,right:-40,width:200,height:200,background:`radial-gradient(circle,${S.green}15,transparent)`,borderRadius:'50%',pointerEvents:'none'}}/>
               <div style={{fontSize:11,color:S.green,fontWeight:600,letterSpacing:1,textTransform:'uppercase',marginBottom:6}}>🚀 Solana Devnet · Anchor Protocol</div>
-              <h1 style={{fontSize:isMobile?22:32,fontWeight:800,margin:'0 0 8px',color:S.text,letterSpacing:-0.5}}>
-                Инвестируй в недвижимость <span style={{color:S.green}}>от $20</span>
+              <h1 style={{fontSize:isMobile?20:26,fontWeight:700,margin:'0 0 6px',background:`linear-gradient(135deg,${S.text},${S.green})`,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
+                Инвестируй в недвижимость от $20
               </h1>
               <p style={{color:S.text2,fontSize:13,margin:'0 0 16px'}}>Токенизированные проекты Казахстана на блокчейне</p>
               <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:isMobile?0:16}}>
                 {[{l:'Проектов',v:counter.projects,c:S.green,i:'🏗'},{l:'Объём',v:`$${counter.volume}K`,c:S.blue,i:'💰'},{l:'Инвесторов',v:`${counter.investors.toLocaleString()}+`,c:'#A78BFA',i:'👥'},{l:'Avg ROI',v:`${counter.roi}%`,c:'#F59E0B',i:'📈'}].map((s,i)=>(
-                  <div key={i} style={{background:'rgba(255,255,255,0.02)',border:`1px solid #1a2235`,borderRadius:8,padding:'14px 16px',display:'flex',alignItems:'center',gap:10,transition:'all 0.2s',backdropFilter:'blur(10px)'}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=s.c;e.currentTarget.style.background='rgba(255,255,255,0.04)';}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor='#1a2235';e.currentTarget.style.background='rgba(255,255,255,0.02)';}}>
+                  <div key={i} style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:10,padding:'12px 14px',display:'flex',alignItems:'center',gap:10,transition:'all 0.2s'}}
+                    onMouseEnter={e=>e.currentTarget.style.borderColor=s.c}
+                    onMouseLeave={e=>e.currentTarget.style.borderColor=S.border}>
                     <span style={{fontSize:22}}>{s.i}</span>
                     <div>
-                      <div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:'monospace',letterSpacing:-0.5}}>{s.v}</div>
-                      <div style={{fontSize:10,color:S.text3,textTransform:'uppercase',letterSpacing:1,marginTop:2}}>{s.l}</div>
+                      <div style={{fontSize:18,fontWeight:700,color:s.c,fontFamily:'monospace'}}>{s.v}</div>
+                      <div style={{fontSize:10,color:S.text3,textTransform:'uppercase',letterSpacing:0.5}}>{s.l}</div>
                     </div>
                   </div>
                 ))}
@@ -618,32 +612,8 @@ function App() {
         {/* PORTFOLIO */}
         {activePage==='portfolio'&&(
           <div style={{animation:'fadeUp 0.3s ease'}}>
-            {/* User Profile Card */}
-            <div style={{background:'linear-gradient(135deg,#0f1a2e,#0a1628)',border:`1px solid #1a2d4a`,borderRadius:12,padding:'20px 24px',marginBottom:20,display:'flex',alignItems:'center',gap:16}}>
-              <div style={{width:56,height:56,borderRadius:'50%',background:`linear-gradient(135deg,${S.green},#0099CC)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:700,color:S.bg3,flexShrink:0,boxShadow:`0 4px 16px ${S.green}40`}}>
-                {wallet==='guest'?'👤':wallet?.slice(0,2).toUpperCase()}
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:16,fontWeight:700,marginBottom:2}}>
-                  {wallet==='guest'?'Гость':'Инвестор SolBrick'}
-                </div>
-                <div style={{fontSize:12,color:S.text2,fontFamily:'monospace',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
-                  {wallet==='guest'?'Подключите кошелёк':wallet}
-                </div>
-                <div style={{display:'flex',gap:8,marginTop:6}}>
-                  <span style={{background:'#0d2d1e',color:S.green,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>● Solana Devnet</span>
-                  {wallet!=='guest'&&<span style={{background:'#0d1f3d',color:S.blue,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>◎ {solBalance.toFixed(3)} SOL</span>}
-                </div>
-              </div>
-              {wallet==='guest'&&(
-                <button onClick={connectWallet} className="btn"
-                  style={{background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'8px 14px',borderRadius:8,fontSize:12,fontWeight:700,whiteSpace:'nowrap'}}>
-                  🔗 Подключить
-                </button>
-              )}
-            </div>
-            <h2 style={{fontSize:18,fontWeight:700,margin:'0 0 4px'}}>Мой портфель</h2>
-            <p style={{color:S.text2,fontSize:13,margin:'0 0 16px'}}>Ваши инвестиции на Solana</p>
+            <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Мой портфель</h2>
+            <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Ваши инвестиции на Solana</p>
             {!wallet?(
               <div style={{textAlign:'center',padding:48,background:S.bg2,border:`1px solid ${S.border}`,borderRadius:14}}>
                 <div style={{fontSize:48,marginBottom:12}}>🔗</div>
