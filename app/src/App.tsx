@@ -65,6 +65,7 @@ function App() {
   const [chatInput, setChatInput] = useState('');
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
+  const [isDark, setIsDark] = useState(true);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -249,7 +250,7 @@ function App() {
   );
 
   return (
-    <div style={{fontFamily:"'Segoe UI',sans-serif",background:S.bg,minHeight:'100vh',color:S.text,width:'100%',overflowX:'hidden'}}>
+    <div style={{fontFamily:"'Segoe UI',sans-serif",background:isDark?S.bg:'#f0f4f8',minHeight:'100vh',color:isDark?S.text:'#1a202c',width:'100%',overflowX:'hidden'}}>
       <style>{`
         *{box-sizing:border-box;}
         @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -306,6 +307,11 @@ function App() {
           </nav>
         )}
         <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <button onClick={()=>setIsDark(!isDark)} className="btn"
+            style={{background:'transparent',border:`1px solid ${S.border}`,color:S.text2,padding:'5px 10px',borderRadius:8,fontSize:14,display:'flex',alignItems:'center',gap:4,cursor:'pointer'}}
+            title="Сменить тему">
+            {isDark?'☀️':'🌙'}
+          </button>
           {wallet&&!isMobile&&<div style={{background:S.bg3,border:`1px solid ${S.border}`,padding:'5px 10px',borderRadius:8,fontSize:12,color:S.text2}}>◎ {solBalance.toFixed(3)}</div>}
           {wallet?(
             <div style={{display:'flex',alignItems:'center',gap:5,background:'#0d2d1e',border:`1px solid ${S.green}40`,padding:'5px 10px',borderRadius:8}}>
