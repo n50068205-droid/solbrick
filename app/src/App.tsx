@@ -26,10 +26,12 @@ type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map';
 interface ChatMsg { id:number; text:string; from:'user'|'bot'; time:string; }
 
 const S = {
-  bg:'#111418', bg2:'#1a1f2e', bg3:'#0d1117',
-  border:'#2a2f3e', border2:'#1e2330',
-  text:'#e8eaed', text2:'#9aa0a6', text3:'#5f6368',
-  green:'#00C896', red:'#FF4757', blue:'#4A9EFF',
+  bg:'#0a0e17', bg2:'#0f1520', bg3:'#080c14',
+  bg4:'#131927',
+  border:'#1a2235', border2:'#111827',
+  text:'#e2e8f0', text2:'#8892a4', text3:'#4a5568',
+  green:'#00D4A0', red:'#FF4757', blue:'#3B82F6',
+  yellow:'#F59E0B', purple:'#8B5CF6',
 };
 
 function App() {
