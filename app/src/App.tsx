@@ -612,8 +612,32 @@ function App() {
         {/* PORTFOLIO */}
         {activePage==='portfolio'&&(
           <div style={{animation:'fadeUp 0.3s ease'}}>
-            <h2 style={{fontSize:20,fontWeight:600,margin:'0 0 4px'}}>Мой портфель</h2>
-            <p style={{color:S.text2,fontSize:13,margin:'0 0 20px'}}>Ваши инвестиции на Solana</p>
+            {/* User Profile Card */}
+            <div style={{background:'linear-gradient(135deg,#0f1a2e,#0a1628)',border:`1px solid #1a2d4a`,borderRadius:12,padding:'20px 24px',marginBottom:20,display:'flex',alignItems:'center',gap:16}}>
+              <div style={{width:56,height:56,borderRadius:'50%',background:`linear-gradient(135deg,${S.green},#0099CC)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:700,color:S.bg3,flexShrink:0,boxShadow:`0 4px 16px ${S.green}40`}}>
+                {wallet==='guest'?'👤':wallet?.slice(0,2).toUpperCase()}
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:16,fontWeight:700,marginBottom:2}}>
+                  {wallet==='guest'?'Гость':'Инвестор SolBrick'}
+                </div>
+                <div style={{fontSize:12,color:S.text2,fontFamily:'monospace',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                  {wallet==='guest'?'Подключите кошелёк':wallet}
+                </div>
+                <div style={{display:'flex',gap:8,marginTop:6}}>
+                  <span style={{background:'#0d2d1e',color:S.green,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>● Solana Devnet</span>
+                  {wallet!=='guest'&&<span style={{background:'#0d1f3d',color:S.blue,fontSize:10,padding:'2px 8px',borderRadius:4,fontWeight:600}}>◎ {solBalance.toFixed(3)} SOL</span>}
+                </div>
+              </div>
+              {wallet==='guest'&&(
+                <button onClick={connectWallet} className="btn"
+                  style={{background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'8px 14px',borderRadius:8,fontSize:12,fontWeight:700,whiteSpace:'nowrap'}}>
+                  🔗 Подключить
+                </button>
+              )}
+            </div>
+            <h2 style={{fontSize:18,fontWeight:700,margin:'0 0 4px'}}>Мой портфель</h2>
+            <p style={{color:S.text2,fontSize:13,margin:'0 0 16px'}}>Ваши инвестиции на Solana</p>
             {!wallet?(
               <div style={{textAlign:'center',padding:48,background:S.bg2,border:`1px solid ${S.border}`,borderRadius:14}}>
                 <div style={{fontSize:48,marginBottom:12}}>🔗</div>
