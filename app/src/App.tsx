@@ -66,7 +66,6 @@ function App() {
   const [chatTyping, setChatTyping] = useState(false);
   const [unreadChat, setUnreadChat] = useState(1);
   const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
-  const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
