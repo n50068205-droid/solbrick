@@ -430,17 +430,28 @@ ${projectList}
 
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,padding:16,marginBottom:16}}>
               <div style={{fontSize:12,color:S.text2,fontWeight:600,marginBottom:12,textTransform:'uppercase',letterSpacing:0.5}}>⚡ AI → BLOCKCHAIN FLOW</div>
-              <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
-                {[{i:'👤',l:'Бюджет'},{i:'🤖',l:'Claude AI'},{i:'📊',l:'AI Score'},{i:'⚡',l:'On-chain TX'},{i:'🏗️',l:'Ownership'}].map((s,idx)=>(
-                  <React.Fragment key={idx}>
-                    {idx>0&&<span style={{color:S.text3,fontSize:16}}>→</span>}
-                    <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'8px 12px',textAlign:'center'}}>
-                      <div style={{fontSize:20}}>{s.i}</div>
-                      <div style={{fontSize:10,fontWeight:600,color:S.text,marginTop:2}}>{s.l}</div>
+              {isMobile?(
+                <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                  {[{i:'👤',l:'Пользователь задаёт бюджет'},{i:'🤖',l:'Claude AI анализирует рынок'},{i:'📊',l:'AI Score выбирает лучший объект'},{i:'⚡',l:'On-chain транзакция в Solana'},{i:'🏗️',l:'Ownership записан навсегда'}].map((s,idx)=>(
+                    <div key={idx} style={{display:'flex',alignItems:'center',gap:10,background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'8px 12px'}}>
+                      <span style={{fontSize:20,width:28,textAlign:'center'}}>{s.i}</span>
+                      <span style={{fontSize:12,color:S.text2}}>{s.l}</span>
                     </div>
-                  </React.Fragment>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ):(
+                <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                  {[{i:'👤',l:'Бюджет'},{i:'🤖',l:'Claude AI'},{i:'📊',l:'AI Score'},{i:'⚡',l:'On-chain TX'},{i:'🏗️',l:'Ownership'}].map((s,idx)=>(
+                    <React.Fragment key={idx}>
+                      {idx>0&&<span style={{color:S.text3,fontSize:16}}>→</span>}
+                      <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'8px 12px',textAlign:'center',minWidth:80}}>
+                        <div style={{fontSize:20}}>{s.i}</div>
+                        <div style={{fontSize:10,fontWeight:600,color:S.text,marginTop:2}}>{s.l}</div>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,padding:20,marginBottom:16}}>
