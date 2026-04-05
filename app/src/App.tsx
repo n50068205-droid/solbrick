@@ -68,15 +68,10 @@ function App() {
   const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
   const [aiScores, setAiScores] = useState<{[k:number]:{score:number,risk:string,verdict:string,buy:boolean}}>({});
   const [analyzingId, setAnalyzingId] = useState<number|null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [agentRunning, setAgentRunning] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [agentLog, setAgentLog] = useState<string[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [agentResult, setAgentResult] = useState<{project:any,score:number,reason:string}|null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [agentBudget, setAgentBudget] = useState(100);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [agentStep, setAgentStep] = useState(0);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -154,7 +149,6 @@ function App() {
     supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const runAiAgent = async () => {
     if (!wallet || wallet==='guest') { showMsg('❌ Подключите кошелёк!'); return; }
     setAgentRunning(true);
@@ -182,8 +176,7 @@ function App() {
       ).join('\n');
 
       log('🧠 Claude AI анализирует проекты...');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const res = await fetch('/api/analyze', {
+          const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -226,8 +219,7 @@ function App() {
   const analyzeProject = async (project:any) => {
     setAnalyzingId(project.id);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const res = await fetch('/api/analyze', {
+          const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({project})
@@ -417,6 +409,98 @@ ${projectList}
           <span style={{fontSize:16,fontWeight:700}}>SolBrick</span>
           <span style={{background:S.bg3,color:S.green,fontSize:9,padding:'2px 6px',borderRadius:4,border:`1px solid ${S.green}30`,fontWeight:700,letterSpacing:1,animation:'glow 3s ease-in-out infinite'}}>DEVNET</span>
         </div>
+
+        {activePage==='agent'&&(
+          <div style={{animation:'fadeUp 0.4s ease'}}>
+            <div style={{background:'linear-gradient(135deg,#0a1628,#0d1f35)',border:'1px solid #1a3a5c',borderRadius:12,padding:'24px',marginBottom:16}}>
+              <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:8}}>
+                <div style={{width:48,height:48,background:'linear-gradient(135deg,#4A9EFF,#8B5CF6)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🤖</div>
+                <div>
+                  <div style={{fontSize:20,fontWeight:800}}>SolBrick AI Agent</div>
+                  <div style={{fontSize:13,color:'#4A9EFF'}}>Autonomous Investment Manager · Powered by Claude AI</div>
+                </div>
+              </div>
+              <p style={{color:S.text2,fontSize:13,lineHeight:1.7,margin:'12px 0'}}>
+                AI агент анализирует все объекты недвижимости, выбирает оптимальный по ROI и автономно инициирует on-chain транзакцию через смарт-контракт Solana.
+              </p>
+              <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+                {['Claude AI','Solana Devnet','Anchor Protocol','Auto-Invest'].map((tag,i)=>(
+                  <span key={i} style={{background:'rgba(74,158,255,0.1)',border:'1px solid rgba(74,158,255,0.3)',color:'#4A9EFF',fontSize:11,padding:'3px 10px',borderRadius:20,fontWeight:600}}>{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,padding:16,marginBottom:16}}>
+              <div style={{fontSize:12,color:S.text2,fontWeight:600,marginBottom:12,textTransform:'uppercase',letterSpacing:0.5}}>⚡ AI → BLOCKCHAIN FLOW</div>
+              <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                {[{i:'👤',l:'Бюджет'},{i:'🤖',l:'Claude AI'},{i:'📊',l:'AI Score'},{i:'⚡',l:'On-chain TX'},{i:'🏗️',l:'Ownership'}].map((s,idx)=>(
+                  <React.Fragment key={idx}>
+                    {idx>0&&<span style={{color:S.text3,fontSize:16}}>→</span>}
+                    <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:8,padding:'8px 12px',textAlign:'center'}}>
+                      <div style={{fontSize:20}}>{s.i}</div>
+                      <div style={{fontSize:10,fontWeight:600,color:S.text,marginTop:2}}>{s.l}</div>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+
+            <div style={{background:S.bg2,border:`1px solid ${S.border}`,borderRadius:12,padding:20,marginBottom:16}}>
+              <div style={{fontSize:14,fontWeight:600,marginBottom:16}}>⚙️ Параметры AI Агента</div>
+              <div style={{marginBottom:16}}>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:8}}>
+                  <span style={{color:S.text2}}>Бюджет для инвестиции</span>
+                  <span style={{color:S.green,fontWeight:700,fontFamily:'monospace'}}>${agentBudget}</span>
+                </div>
+                <input type="range" min="20" max="500" step="10" value={agentBudget} onChange={e=>setAgentBudget(Number(e.target.value))}/>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:10,color:S.text3,marginTop:3}}>
+                  <span>$20</span><span>$500</span>
+                </div>
+              </div>
+              <button onClick={runAiAgent} disabled={agentRunning} className="btn"
+                style={{width:'100%',background:agentRunning?S.border:'linear-gradient(135deg,#4A9EFF,#8B5CF6)',color:'white',border:'none',padding:'14px',borderRadius:10,fontSize:15,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+                {agentRunning?<><div style={{width:14,height:14,border:'2px solid white',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/>Агент работает...</>:'🚀 Запустить AI Агента'}
+              </button>
+            </div>
+
+            {agentLog.length>0&&(
+              <div style={{background:S.bg3,border:`1px solid ${S.border}`,borderRadius:12,padding:16,marginBottom:16,fontFamily:'monospace'}}>
+                <div style={{fontSize:11,color:'#4A9EFF',fontWeight:600,marginBottom:10}}>📡 AI AGENT LOG</div>
+                {agentLog.map((log,i)=>(
+                  <div key={i} style={{fontSize:12,color:i===agentLog.length-1?S.green:S.text2,marginBottom:4}}>
+                    <span style={{color:S.text3,marginRight:8}}>[{String(i+1).padStart(2,'0')}]</span>{log}
+                  </div>
+                ))}
+                {agentRunning&&<div style={{fontSize:12,color:'#4A9EFF',marginTop:4}}>▋</div>}
+              </div>
+            )}
+
+            {agentResult&&(
+              <div style={{background:'linear-gradient(135deg,#0d2d1e,#0a1f15)',border:`1px solid ${S.green}40`,borderRadius:12,padding:20,animation:'fadeUp 0.4s ease'}}>
+                <div style={{fontSize:12,color:S.green,fontWeight:700,marginBottom:12,textTransform:'uppercase',letterSpacing:0.5}}>✅ AI РЕШЕНИЕ ПРИНЯТО</div>
+                <div style={{display:'flex',gap:12,alignItems:'center',marginBottom:12}}>
+                  <img src={agentResult.project.photos[0]} alt="" style={{width:72,height:54,borderRadius:8,objectFit:'cover'}}/>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700}}>{agentResult.project.name}</div>
+                    <div style={{fontSize:12,color:S.text2}}>{agentResult.project.location}</div>
+                    <div style={{fontSize:12,color:S.green,marginTop:2}}>AI Score: {agentResult.score}/100 · ROI {agentResult.project.roi}</div>
+                  </div>
+                  <div style={{marginLeft:'auto',textAlign:'right'}}>
+                    <div style={{fontSize:28,fontWeight:800,color:S.green,fontFamily:'monospace'}}>{agentResult.score}</div>
+                    <div style={{fontSize:10,color:S.text3}}>AI SCORE</div>
+                  </div>
+                </div>
+                <div style={{background:'rgba(0,0,0,0.2)',borderRadius:8,padding:'8px 12px',marginBottom:12,fontSize:12,color:S.text2,lineHeight:1.5}}>
+                  🧠 {agentResult.reason}
+                </div>
+                <button onClick={()=>openModal(agentResult.project, Math.floor(agentBudget/agentResult.project.pricePerShare))} className="btn"
+                  style={{width:'100%',background:`linear-gradient(135deg,${S.green},#0099CC)`,color:S.bg3,border:'none',padding:'14px',borderRadius:10,fontSize:14,fontWeight:800}}>
+                  ⚡ Исполнить AI решение → On-chain транзакция
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
             {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта'],['agent','🤖 AI Агент']].map(([page,label])=>(
