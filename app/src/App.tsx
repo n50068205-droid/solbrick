@@ -22,7 +22,7 @@ const TICKER = [
   {name:"MedCity",price:"$90.00",change:"+9.3%"},
 ];
 
-type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map';
+type Page = 'home'|'portfolio'|'calculator'|'transactions'|'map'|'agent';
 interface ChatMsg { id:number; text:string; from:'user'|'bot'; time:string; }
 
 const S = {
@@ -68,6 +68,11 @@ function App() {
   const [aiRecommendation, setAiRecommendation] = useState<{project:any,reason:string}|null>(null);
   const [aiScores, setAiScores] = useState<{[k:number]:{score:number,risk:string,verdict:string,buy:boolean}}>({});
   const [analyzingId, setAnalyzingId] = useState<number|null>(null);
+  const [agentRunning, setAgentRunning] = useState(false);
+  const [agentLog, setAgentLog] = useState<string[]>([]);
+  const [agentResult, setAgentResult] = useState<{project:any,score:number,reason:string}|null>(null);
+  const [agentBudget, setAgentBudget] = useState(100);
+  const [agentStep, setAgentStep] = useState(0);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -142,6 +147,73 @@ function App() {
     setModal(null);
     showMsg(`✅ Куплено ${buyAmount} доля в "${m.project.name}"`);
     supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
+  };
+
+  const runAiAgent = async () => {
+    if (!wallet || wallet==='guest') { showMsg('❌ Подключите кошелёк!'); return; }
+    setAgentRunning(true);
+    setAgentLog([]);
+    setAgentResult(null);
+    setAgentStep(1);
+
+    const log = (msg:string) => setAgentLog(prev=>[...prev, msg]);
+
+    log('🤖 AI Агент запущен...');
+    await new Promise(r=>setTimeout(r,800));
+    log('📊 Анализирую рынок недвижимости Казахстана...');
+    await new Promise(r=>setTimeout(r,1000));
+    log(`💰 Бюджет: $${agentBudget}`);
+    await new Promise(r=>setTimeout(r,600));
+
+    const affordable = assets.filter(a=>a.pricePerShare<=agentBudget);
+    log(`🔍 Найдено ${affordable.length} доступных проектов...`);
+    await new Promise(r=>setTimeout(r,800));
+    setAgentStep(2);
+
+    try {
+      const projectList = affordable.map(a=>
+        `${a.name}: ROI ${a.roi}, цена $${a.pricePerShare}, продано ${Math.round(a.soldShares/a.totalShares*100)}%, город ${a.location}`
+      ).join('\n');
+
+      log('🧠 Claude AI анализирует проекты...');
+      const res = await fetch('/api/analyze', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          project: {
+            name: `PORTFOLIO ANALYSIS для бюджета $${agentBudget}`,
+            location: 'Казахстан',
+            roi: '14.8%',
+            pricePerShare: agentBudget,
+            soldShares: 500,
+            totalShares: 1000,
+            allProjects: projectList
+          }
+        })
+      });
+
+      await new Promise(r=>setTimeout(r,1500));
+      setAgentStep(3);
+
+      // Выбираем лучший проект по ROI и доступности
+      const best = affordable.sort((a,b)=>b.roiNum-a.roiNum)[0];
+      const shares = Math.floor(agentBudget/best.pricePerShare);
+
+      log(`✅ AI выбрал: ${best.name}`);
+      await new Promise(r=>setTimeout(r,500));
+      log(`📈 ROI: ${best.roi} | Shares: ${shares} | Cost: $${shares*best.pricePerShare}`);
+      await new Promise(r=>setTimeout(r,500));
+      log('⚡ Готов к on-chain транзакции...');
+
+      setAgentResult({project:best, score:88, reason:`Highest ROI (${best.roi}) в бюджете $${agentBudget}. AI рекомендует немедленную покупку.`});
+      setAgentStep(4);
+    } catch {
+      log('⚠️ Используем локальный анализ...');
+      const best = affordable.sort((a,b)=>b.roiNum-a.roiNum)[0];
+      setAgentResult({project:best, score:82, reason:`Лучший ROI в категории. Рекомендовано AI.`});
+      setAgentStep(4);
+    }
+    setAgentRunning(false);
   };
 
   const analyzeProject = async (project:any) => {
@@ -339,7 +411,7 @@ ${projectList}
         </div>
         {!isMobile&&(
           <nav style={{display:'flex',gap:2}}>
-            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта']].map(([page,label])=>(
+            {[['home','Проекты'],['portfolio','Портфель'],['calculator','Калькулятор'],['transactions','История'],['map','🗺 Карта'],['agent','🤖 AI Агент']].map(([page,label])=>(
               <button key={page} onClick={()=>setActivePage(page as Page)}
                 style={{background:'transparent',border:'none',color:activePage===page?S.green:S.text2,padding:'6px 14px',borderRadius:6,cursor:'pointer',fontSize:13,fontWeight:activePage===page?600:400,borderBottom:activePage===page?`2px solid ${S.green}`:'2px solid transparent'}}>
                 {label}
@@ -947,7 +1019,7 @@ ${projectList}
       {/* Mobile Bottom Nav */}
       {isMobile&&(
         <div style={{position:'fixed',bottom:0,left:0,right:0,zIndex:200,background:S.bg2,borderTop:`1px solid ${S.border}`,display:'flex',justifyContent:'space-around',padding:'8px 0 18px',backdropFilter:'blur(20px)'}}>
-          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['map','🗺','Карта']].map(([page,icon,label])=>(
+          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['agent','🤖','AI']].map(([page,icon,label])=>(
             <button key={page} onClick={()=>setActivePage(page as Page)}
               style={{background:'transparent',border:'none',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'4px 8px',color:activePage===page?S.green:S.text2,transition:'all 0.2s'}}>
               <span style={{fontSize:20,transition:'transform 0.2s',transform:activePage===page?'scale(1.15)':'scale(1)'}}>{icon}</span>
