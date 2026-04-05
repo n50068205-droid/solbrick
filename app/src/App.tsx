@@ -725,7 +725,7 @@ ${projectList}
         </div>
       )}
 
-      <main style={{maxWidth:1280,margin:'0 auto',padding:isMobile?'12px 12px 80px':'24px 32px'}}>
+      <main style={{maxWidth:1280,margin:'0 auto',padding:isMobile?'12px 12px 100px':'24px 32px',width:'100%',overflowX:'hidden'}}>
 
         {/* HOME */}
         {activePage==='home'&&(
