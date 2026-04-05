@@ -410,7 +410,7 @@ ${projectList}
 
         {activePage==='agent'&&(
           <div style={{animation:'fadeUp 0.4s ease'}}>
-            <div style={{background:'linear-gradient(135deg,#0a1628,#0d1f35)',border:'1px solid #1a3a5c',borderRadius:12,padding:'24px',marginBottom:16}}>
+            <div style={{background:'linear-gradient(135deg,#0a1628,#0d1f35)',border:'1px solid #1a3a5c',borderRadius:12,padding:isMobile?'16px':'24px',marginBottom:16}}>
               <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:8}}>
                 <div style={{width:48,height:48,background:'linear-gradient(135deg,#4A9EFF,#8B5CF6)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24}}>🤖</div>
                 <div>
