@@ -149,6 +149,7 @@ function App() {
     supabase.from('purchases').insert({wallet: wallet, project_name: m.project.name, amount: m.amount, cost: cost}).then(() => {});
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const runAiAgent = async () => {
     if (!wallet || wallet==='guest') { showMsg('❌ Подключите кошелёк!'); return; }
     setAgentRunning(true);
@@ -174,7 +175,7 @@ function App() {
       ).join('\n');
 
       log('🧠 Claude AI анализирует проекты...');
-          await fetch('/api/analyze', {
+          const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -214,7 +215,7 @@ function App() {
   const analyzeProject = async (project:any) => {
     setAnalyzingId(project.id);
     try {
-          await fetch('/api/analyze', {
+          const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({project})
