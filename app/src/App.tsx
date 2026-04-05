@@ -1120,7 +1120,7 @@ ${projectList}
       {/* Mobile Bottom Nav */}
       {isMobile&&(
         <div style={{position:'fixed',bottom:0,left:0,right:0,zIndex:200,background:S.bg2,borderTop:`1px solid ${S.border}`,display:'flex',justifyContent:'space-around',padding:'8px 0 18px',backdropFilter:'blur(20px)'}}>
-          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['agent','🤖','AI']].map(([page,icon,label])=>(
+          {[['home','🏠','Проекты'],['portfolio','💼','Портфель'],['calculator','🧮','Расчёт'],['transactions','📋','История'],['agent','🤖','AI Агент']].map(([page,icon,label])=>(
             <button key={page} onClick={()=>setActivePage(page as Page)}
               style={{background:'transparent',border:'none',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'4px 8px',color:activePage===page?S.green:S.text2,transition:'all 0.2s'}}>
               <span style={{fontSize:20,transition:'transform 0.2s',transform:activePage===page?'scale(1.15)':'scale(1)'}}>{icon}</span>
