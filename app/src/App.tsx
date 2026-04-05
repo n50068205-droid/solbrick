@@ -175,7 +175,8 @@ function App() {
       ).join('\n');
 
       log('🧠 Claude AI анализирует проекты...');
-          const res = await fetch('/api/analyze', {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -215,7 +216,8 @@ function App() {
   const analyzeProject = async (project:any) => {
     setAnalyzingId(project.id);
     try {
-          const res = await fetch('/api/analyze', {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const res = await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({project})
