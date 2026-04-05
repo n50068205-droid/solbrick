@@ -72,7 +72,7 @@ function App() {
   const [agentLog, setAgentLog] = useState<string[]>([]);
   const [agentResult, setAgentResult] = useState<{project:any,score:number,reason:string}|null>(null);
   const [agentBudget, setAgentBudget] = useState(100);
-  const [agentStep, setAgentStep] = useState(0);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -154,7 +154,6 @@ function App() {
     setAgentRunning(true);
     setAgentLog([]);
     setAgentResult(null);
-    setAgentStep(1);
 
     const log = (msg:string) => setAgentLog(prev=>[...prev, msg]);
 
@@ -168,7 +167,6 @@ function App() {
     const affordable = assets.filter(a=>a.pricePerShare<=agentBudget);
     log(`🔍 Найдено ${affordable.length} доступных проектов...`);
     await new Promise(r=>setTimeout(r,800));
-    setAgentStep(2);
 
     try {
       const projectList = affordable.map(a=>
@@ -176,7 +174,7 @@ function App() {
       ).join('\n');
 
       log('🧠 Claude AI анализирует проекты...');
-          const res = await fetch('/api/analyze', {
+          await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
@@ -193,8 +191,7 @@ function App() {
       });
 
       await new Promise(r=>setTimeout(r,1500));
-      setAgentStep(3);
-
+  
       // Выбираем лучший проект по ROI и доступности
       const best = affordable.sort((a,b)=>b.roiNum-a.roiNum)[0];
       const shares = Math.floor(agentBudget/best.pricePerShare);
@@ -206,20 +203,18 @@ function App() {
       log('⚡ Готов к on-chain транзакции...');
 
       setAgentResult({project:best, score:88, reason:`Highest ROI (${best.roi}) в бюджете $${agentBudget}. AI рекомендует немедленную покупку.`});
-      setAgentStep(4);
-    } catch {
+      } catch {
       log('⚠️ Используем локальный анализ...');
       const best = affordable.sort((a,b)=>b.roiNum-a.roiNum)[0];
       setAgentResult({project:best, score:82, reason:`Лучший ROI в категории. Рекомендовано AI.`});
-      setAgentStep(4);
-    }
+      }
     setAgentRunning(false);
   };
 
   const analyzeProject = async (project:any) => {
     setAnalyzingId(project.id);
     try {
-          const res = await fetch('/api/analyze', {
+          await fetch('/api/analyze', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({project})
